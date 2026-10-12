@@ -1,0 +1,395 @@
+<title>Gramática en Clase · Unidad 106</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky study bar + single reading column; main page is a chapter grid with a 3-step method strip */
+:root{
+  --bg:#F3F5F9; --surface:#FFFFFF; --ink:#172033; --muted:#5B6679; --line:#DDE2EC;
+  --accent:#B8283F; --accent-ink:#FFFFFF; --accent-soft:#FBE4E8;
+  --gold:#F2B705; --gold-soft:#FFF3C4; --chip:#E8EDF6;
+  --ok:#12805C; --ok-soft:#DDF4EA; --bad:#C0302B; --bad-soft:#FDE3E1; --half:#8A5600; --half-soft:#FFF0CC;
+  --f-display:"Bricolage Grotesque","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1522; --surface:#182033; --ink:#ECEFF6; --muted:#9AA6BC; --line:#2A3550;
+  --accent:#F0627A; --accent-ink:#1A0509; --accent-soft:#3B1A24; --gold:#F2B705; --gold-soft:#3A3010; --chip:#222C45;
+  --ok:#4FD1A0; --ok-soft:#12382D; --bad:#FF7A74; --bad-soft:#43201F; --half:#F2B705; --half-soft:#3A3010; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1522; --surface:#182033; --ink:#ECEFF6; --muted:#9AA6BC; --line:#2A3550;
+  --accent:#F0627A; --accent-ink:#1A0509; --accent-soft:#3B1A24; --gold:#F2B705; --gold-soft:#3A3010; --chip:#222C45;
+  --ok:#4FD1A0; --ok-soft:#12382D; --bad:#FF7A74; --bad-soft:#43201F; --half:#F2B705; --half-soft:#3A3010; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;margin:0}
+h1,h2,h3{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:980px;margin-inline:auto;padding-inline:16px}
+.col{max-width:780px;margin-inline:auto;padding-inline:16px}
+.es{font-style:italic;font-weight:500;cursor:pointer;border-bottom:1.5px dotted var(--accent);white-space:normal}
+.es:hover{background:var(--accent-soft)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* ===== main ===== */
+.hero{padding-block:48px 28px}
+.hero h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{max-width:60ch;color:var(--muted);margin:14px 0 0}
+.who{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:24px}
+.who label{font-weight:700;font-size:.9rem}
+.who input{font:inherit;padding:10px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:min(100%,260px)}
+.overall{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--chip);overflow:hidden;min-width:120px;flex:1}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-block:8px 36px;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;background:var(--gold-soft);border-radius:14px;padding:14px 16px;font-size:.92rem}
+.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#241a00;font-weight:800;margin-right:8px;font-family:var(--f-display)}
+.steps b{display:inline}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;padding-bottom:48px}
+.card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;text-decoration:none;transition:transform .15s,box-shadow .15s;min-width:0}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(20,30,60,.12)}
+.card .no{font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1;color:var(--accent)}
+.card h2{font-size:1.35rem;font-style:italic}
+.card .ko{font-weight:700}
+.card .desc{color:var(--muted);font-size:.9rem;flex:1}
+.card .meta{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--muted);flex-wrap:wrap}
+.card .go{font-weight:700;color:var(--accent)}
+.card.soon{background:transparent;border-style:dashed;justify-content:center;color:var(--muted);pointer-events:none}
+footer.site{padding-block:0 48px;color:var(--muted);font-size:.84rem}
+
+/* ===== chapter ===== */
+.studybar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.sb-row{display:flex;align-items:center;gap:10px;padding-block:8px;flex-wrap:wrap}
+.home{text-decoration:none;font-weight:700;font-size:.92rem;padding:6px 10px;border-radius:8px;background:var(--chip)}
+.tabs{display:flex;gap:6px}
+.tabs a{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;text-decoration:none;font-weight:700;font-family:var(--f-display);background:var(--chip)}
+.tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.sb-spacer{flex:1}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.btn{border:0;border-radius:10px;padding:9px 16px;font-weight:700;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--chip);color:var(--ink)}
+.btn:hover{filter:brightness(1.07)}
+.keys{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:8px}
+.keys button{min-width:34px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-weight:700}
+.keys span{font-size:.78rem;color:var(--muted);align-self:center;margin-right:4px}
+
+.ch-head{padding-block:36px 12px}
+.ch-head .no{font-family:var(--f-display);font-weight:800;color:var(--accent);font-size:1rem;letter-spacing:.1em}
+.ch-head h1{font-size:clamp(2rem,6vw,3rem);font-style:italic;font-weight:800;margin-top:4px}
+.ch-head h1 small{display:block;font-size:.5em;font-style:normal;font-weight:500;color:var(--muted);margin-top:4px}
+section.theory{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin-block:18px}
+section.theory h2{font-size:1.3rem;margin-bottom:10px}
+section.theory h3{font-size:1.05rem;margin:22px 0 8px}
+section.theory p{margin:8px 0}
+.tip{font-size:.84rem;color:var(--muted);margin:0 0 4px}
+.tw{overflow-x:auto;margin-block:10px}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:.95rem}
+th{background:var(--accent);color:var(--accent-ink);text-align:left;padding:8px 12px;font-size:.85rem}
+td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.note{border-radius:12px;padding:12px 14px;margin-block:12px;font-size:.95rem}
+.note.warn{background:var(--gold-soft)}
+.note.pero{background:var(--accent-soft)}
+.note b.lab{font-family:var(--f-display);letter-spacing:.06em;margin-right:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px}
+.chips .es{background:var(--chip);border:0;padding:3px 10px;border-radius:99px}
+ul.rules{padding-left:1.2em;margin:8px 0}
+ul.rules li{margin-block:4px}
+
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin-block:18px}
+.ex-head{display:flex;gap:12px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:6px}
+.ex-head h2{font-size:1.2rem}
+.ex-score{font-family:var(--f-display);font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.ex p.instr{margin:0 0 14px;color:var(--muted);font-size:.93rem}
+ol.items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+li.item{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;min-width:0;align-items:start}
+li.item .n{font-size:.8rem;font-weight:700;color:var(--muted);padding-top:3px;font-variant-numeric:tabular-nums}
+.q{min-width:0;overflow-wrap:anywhere}
+.q input{font:inherit;font-style:italic;width:9.5em;max-width:100%;padding:3px 8px;margin-inline:4px;border:0;border-bottom:2px solid var(--accent);background:var(--chip);color:var(--ink);border-radius:6px 6px 0 0}
+.blank{display:inline-block;min-width:3.4em;text-align:center;margin-inline:4px;padding:0 8px;border-bottom:2px solid var(--accent);background:var(--chip);border-radius:6px 6px 0 0;font-style:italic;font-weight:500;min-height:1.5em;vertical-align:bottom}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.opts button{border:1.5px solid var(--line);background:var(--bg);border-radius:9px;padding:3px 12px;font-style:italic;font-size:.95rem}
+.opts button[aria-checked="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fb{font-size:.86rem;margin-top:6px;grid-column:2}
+li.item.ok{border-color:var(--ok);background:var(--ok-soft)}
+li.item.bad{border-color:var(--bad);background:var(--bad-soft)}
+li.item.half{border-color:var(--half);background:var(--half-soft)}
+li.item.ok .fb{color:var(--ok)} li.item.bad .fb{color:var(--bad)} li.item.half .fb{color:var(--half)}
+.fb b{font-style:italic}
+.fb .why{display:block;color:var(--ink);opacity:.85;margin-top:4px;line-height:1.55}.fb .why b{font-style:normal;font-family:var(--f-display);font-size:.78rem;letter-spacing:.05em;color:var(--muted);margin-right:4px}.unit-tag{font-family:var(--f-display);font-weight:800;color:var(--accent)}
+
+.result{background:var(--surface);border:2px solid var(--accent);border-radius:20px;padding:24px;margin-block:24px}
+.result[hidden]{display:none}
+.r-top{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.ring{position:relative;width:132px;height:132px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:12}
+.ring .bg{stroke:var(--chip)} .ring .fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dasharray .8s}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.9rem;font-weight:800}
+.r-txt{min-width:0;flex:1}
+.r-txt h2{font-size:1.6rem}
+.r-txt p{margin:6px 0;color:var(--muted)}
+.brk{margin-top:18px;display:grid;gap:8px}
+.brk div{display:grid;grid-template-columns:minmax(0,1fr) 90px 60px;gap:10px;align-items:center;font-size:.9rem}
+.brk .bar{min-width:0}
+.brk span:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.r-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:12px 56px}
+.pager a{text-decoration:none;font-weight:700;padding:12px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+@media (max-width:520px){ol.items{grid-template-columns:1fr}.brk div{grid-template-columns:minmax(0,1fr) 60px 52px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div id="app"></div>
+
+<script>
+const E = t => `<span class="es" role="button" tabindex="0" data-say="${t.replace(/"/g,'&quot;')}">${t}</span>`;
+const chips = arr => `<div class="chips">${arr.map(E).join('')}</div>`;
+const tbl = (head, rows) => `<div class="tw"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const warn = h => `<div class="note warn"><b class="lab">ATENCIÓN</b>${h}</div>`;
+const pero = h => `<div class="note pero"><b class="lab">PERO</b>${h}</div>`;
+const ELLA = ['el','la'];
+const pk = (q,o,a,why) => ({t:'pick',q,o,a,why});
+const tx = (q,a,why) => ({t:'text',q,a:Array.isArray(a)?a:[a],why});
+
+const X = (title,instr,rule,items) => ({title,instr,rule,items});
+const P = (o,rows) => rows.map(r=>pk(r[0],o,r[1],r[2]));
+const T = rows => rows.map(r=>tx(r[0],r[1],r[2]));
+const DEF = ['el','la','los','las'];
+const INDEF = ['un','una','unos','unas'];
+
+const CH = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":106,"es":"médico, árbol, inglés","ko":"강세 부호(tilde) 규칙","desc":"단어 끝 철자에 따른 강세 위치와 tilde 규칙, él/el 같은 구별용 tilde를 익힙니다.","theory":"\n<h2>핵심 정리</h2>\n<p class=\"tip\">🔊 예문을 누르면 발음을 들을 수 있어요.</p>\n<p>모든 단어에는 <b>가장 세게 읽는 음절(강세 음절)</b>이 있습니다. 규칙에 어긋나는 단어에는 그 모음 위에 <b>tilde(´)</b>를 찍습니다: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"árbol\">árbol</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"café\">café</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"hábil\">hábil</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"médico\">médico</span>.</p>\n<h3>1. 2음절 이상 단어</h3>\n<div class=\"tw\"><table><tr><th>끝 철자</th><th>기본 강세 위치</th><th>예 (tilde 없음)</th></tr>\n<tr><td><b>모음 / n / s</b></td><td>끝에서 두 번째 음절</td><td><span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"casa\">casa</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"libro\">libro</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"restaurante\">restaurante</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"amas\">amas</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"beben\">beben</span></td></tr>\n<tr><td><b>n, s 이외의 자음</b></td><td>마지막 음절</td><td><span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"español\">español</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"hotel\">hotel</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"salud\">salud</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"usted\">usted</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"amor\">amor</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"beber\">beber</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"reloj\">reloj</span></td></tr></table></div>\n<p>위 규칙대로 읽히지 않으면 tilde를 찍습니다: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"policía\">policía</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"café\">café</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"ratón\">ratón</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"inglés\">inglés</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"fútbol\">fútbol</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"árbol\">árbol</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"azúcar\">azúcar</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"médico\">médico</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"sábado\">sábado</span></p>\n<h3>2. 1음절 단어</h3>\n<p>원칙적으로 tilde가 없습니다: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"pan\">pan</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"tren\">tren</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"luz\">luz</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"sol\">sol</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"sal\">sal</span>, <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"dos\">dos</span>.</p>\n<h3>3. 뜻을 구별하는 tilde</h3>\n<div class=\"tw\"><table><tr><th>tilde 있음</th><th>tilde 없음</th></tr>\n<tr><td><b>él</b> (그) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Él es de Hamburgo.\">Él es de Hamburgo.</span></td><td><b>el</b> (정관사) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"El coche de Andrés está mal aparcado.\">El coche de Andrés está mal aparcado.</span></td></tr>\n<tr><td><b>sí</b> (예 / 자신) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Sí, quiero.\">Sí, quiero.</span></td><td><b>si</b> (만약) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Si quieres, cómpratelo.\">Si quieres, cómpratelo.</span></td></tr>\n<tr><td><b>mí</b> (나를/나에게) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"¿Es para mí?\">¿Es para mí?</span></td><td><b>mi</b> (나의) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Es mi padre.\">Es mi padre.</span></td></tr>\n<tr><td><b>tú</b> (너) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Y tú, ¿dónde vives?\">Y tú, ¿dónde vives?</span></td><td><b>tu</b> (너의) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"¿Quién es tu profesor?\">¿Quién es tu profesor?</span></td></tr>\n<tr><td><b>sé</b> (saber의 yo) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Sé hablar español.\">Sé hablar español.</span></td><td><b>se</b> (재귀·간접목적 대명사) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Se levanta muy temprano.\">Se levanta muy temprano.</span></td></tr>\n<tr><td><b>té</b> (차) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"No me gusta el té.\">No me gusta el té.</span></td><td><b>te</b> (너를/너에게) <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"¿Te gusta el café?\">¿Te gusta el café?</span></td></tr></table></div>\n<h3>4. 의문사·감탄사의 tilde</h3>\n<ul class=\"rules\"><li>의문·감탄: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"¿Dónde vives?\">¿Dónde vives?</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"¡Qué frío!\">¡Qué frío!</span></li><li>관계사(tilde 없음): <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Esta es la casa donde nací.\">Esta es la casa donde nací.</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Ese es el coche que quiero.\">Ese es el coche que quiero.</span></li></ul>","ex":[{"title":"연습 1. 올바른 철자 고르기","instr":"tilde가 올바르게 쓰인 단어를 고르세요.","rule":"n/s/모음 끝 → 끝에서 둘째 음절이 기본. 어긋나면 tilde.","items":[{"t":"pick","q":"Me gusta comer ___.","o":["melón","melon"],"a":"melón","why":"n으로 끝나는데 마지막 음절 강세 → tilde 필요."},{"t":"pick","q":"Hay un ___ en el jardín.","o":["árbol","arbol"],"a":"árbol","why":"l로 끝나는데 끝에서 둘째 음절 강세 → tilde 필요."},{"t":"pick","q":"Mi profesor es ___.","o":["inglés","ingles"],"a":"inglés","why":"s로 끝나는데 마지막 음절 강세 → tilde 필요."},{"t":"pick","q":"Este ejercicio es muy ___.","o":["fácil","facil"],"a":"fácil","why":"l로 끝나는데 끝에서 둘째 음절 강세 → tilde 필요."},{"t":"pick","q":"No tengo tu ___.","o":["teléfono","telefono"],"a":"teléfono","why":"모음으로 끝나는데 끝에서 셋째 음절 강세 → tilde 필요."},{"t":"pick","q":"Mi madre trabaja en el ___.","o":["hospital","hospítal"],"a":"hospital","why":"l로 끝나고 마지막 음절 강세 → 규칙대로라 tilde 없음."},{"t":"pick","q":"Esta ___ me gusta mucho.","o":["canción","cancion"],"a":"canción","why":"n으로 끝나는데 마지막 음절 강세 → tilde 필요."},{"t":"pick","q":"Tengo un ___ nuevo.","o":["reloj","relój"],"a":"reloj","why":"j로 끝나고 마지막 음절 강세 → 규칙대로라 tilde 없음."}]},{"title":"연습 2. 구별용 tilde 고르기","instr":"알맞은 것을 고르세요.","rule":"él/el, mí/mi, tú/tu, sé/se, té/te, sí/si의 구별.","items":[{"t":"pick","q":"¿___ vives en Madrid? (너는)","o":["tú","tu"],"a":"tú","why":"주어 대명사 \"너는\" → tú."},{"t":"pick","q":"¿Dónde está ___ casa? (너의)","o":["tú","tu"],"a":"tu","why":"소유형용사 \"너의\" → tu."},{"t":"pick","q":"___ es de Hamburgo. (그는)","o":["él","el"],"a":"él","why":"주어 대명사 \"그\" → Él."},{"t":"pick","q":"¿Es para ___? (나에게)","o":["mí","mi"],"a":"mí","why":"전치사 뒤 대명사 → mí."},{"t":"pick","q":"Es ___ padre. (나의)","o":["mí","mi"],"a":"mi","why":"소유형용사 → mi."},{"t":"pick","q":"Yo ___ hablar español.","o":["sé","se"],"a":"sé","why":"saber의 yo형 → sé."},{"t":"pick","q":"Ella ___ levanta temprano.","o":["sé","se"],"a":"se","why":"재귀대명사 → se."},{"t":"pick","q":"No me gusta el ___. (차)","o":["té","te"],"a":"té","why":"음료 \"차\" → té."},{"t":"pick","q":"¿___ gusta el café? (너에게)","o":["té","te"],"a":"te","why":"간접목적 대명사 → te."},{"t":"pick","q":"___, quiero. (예)","o":["sí","si"],"a":"sí","why":"긍정 답 → sí."},{"t":"pick","q":"___ quieres, cómpratelo. (만약)","o":["sí","si"],"a":"si","why":"조건 \"만약\" → si."}]},{"title":"연습 3. tilde 붙여 쓰기","instr":"( ) 안의 단어에 필요하면 tilde를 붙여 쓰세요.","rule":"규칙 + 구별용 tilde.","items":[{"t":"text","q":"El ___ es verde. (arbol)","a":["árbol"],"why":"l 끝, 끝에서 둘째 음절 강세 → árbol."},{"t":"text","q":"Quiero un ___ con leche. (cafe)","a":["café"],"why":"모음 끝인데 마지막 음절 강세 → café."},{"t":"text","q":"Mi ___ es médico. (padre)","a":["padre"],"why":"규칙대로 → tilde 없음."},{"t":"text","q":"No me gusta el ___. (te)","a":["té"],"why":"음료 \"차\" → té."},{"t":"text","q":"¿___ eres? (Quien)","a":["Quién"],"why":"의문사 → Quién."},{"t":"text","q":"Mañana es ___. (sabado)","a":["sábado"],"why":"끝에서 셋째 음절 강세 → sábado."},{"t":"text","q":"Juego al ___. (futbol)","a":["fútbol"],"why":"l 끝, 끝에서 둘째 음절 강세 → fútbol."},{"t":"text","q":"¡___ alto es Ángel! (Que)","a":["Qué"],"why":"감탄사 → Qué."}]}]}];
+const SINGLE = 106;
+window.__CH = CH;
+
+/* ---------- state ---------- */
+const $ = s => document.querySelector(s);
+const state = {}; // state[ch][key] = value
+const marks = {}; // marks[ch][key] = 'ok'|'half'|'bad'
+let focusedInput = null;
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+};
+const progress = () => store.get('gdu-progress') || {};
+const total = ch => ch.ex.reduce((n,e)=>n+e.items.length,0);
+const fmt = n => (Math.round(n*10)/10).toString();
+
+function speak(t){
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='es-ES'; u.rate=.9; speechSynthesis.speak(u);}catch(e){}
+}
+document.addEventListener('click',e=>{ const s=e.target.closest('.es'); if(s) speak(s.dataset.say); });
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ') && e.target.classList && e.target.classList.contains('es')){ e.preventDefault(); speak(e.target.dataset.say);} });
+
+/* ---------- main page ---------- */
+function main(){
+  const pr = progress(); const name = store.get('gdu-name')||'';
+  const done = CH.filter(c=>pr['ch'+c.id]).length;
+  $('#app').innerHTML = `
+  <header class="wrap hero">
+    <div class="eyebrow">Gramática de uso del español A1–A2 · Unidades 1–5</div>
+    <h1>Gramática <em>en Clase</em></h1>
+    <p>교재 1과부터 5과까지 핵심 문법을 정리하고, 과마다 연습문제를 풀어 바로 점수와 정답을 확인하는 스페인어 학습 사이트입니다.</p>
+    <div class="who">
+      <label for="stu">이름</label><input id="stu" type="text" placeholder="이름을 입력하세요" value="${name.replace(/"/g,'&quot;')}" autocomplete="off">
+      <div class="overall"><span>학습 진도 ${done} / ${CH.length}</span><div class="bar"><i style="width:${done/CH.length*100}%"></i></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <ol class="steps"><li><b>문법 정리</b>를 읽고 예문을 눌러 발음을 들어요.</li><li><b>연습문제</b>를 풀어요. 악센트 입력 버튼이 있어요.</li><li><b>채점하기</b>로 점수와 정답, 해설을 확인하고 틀린 문제만 다시 풀어요.</li></ol>
+    <div class="grid">
+    ${CH.map(c=>{const p=pr['ch'+c.id];const t=total(c);return `
+      <a class="card" href="#ch${c.id}">
+        <div class="no">${c.id}</div>
+        <h2>${c.es}</h2>
+        <div class="ko">${c.ko}</div>
+        <div class="desc">${c.desc}</div>
+        <div class="bar"><i style="width:${p?p.score/p.total*100:0}%"></i></div>
+        <div class="meta"><span>${t}문제</span><span>${p?`최고 ${fmt(p.score)} / ${p.total}점`:'아직 풀지 않음'}</span></div>
+        <span class="go">학습하기 →</span>
+      </a>`}).join('')}
+      <div class="card soon"><div class="no">6+</div><div class="ko">다음 단원 준비 중</div><div class="desc">6과 이후는 순서대로 추가할 예정입니다.</div></div>
+    </div>
+    <footer class="site">교재: Gramática de uso del español. Teoría y práctica, Nivel A1–A2 (L. Aragonés, R. Palencia, SM). 연습문제는 교재의 문법 항목에 맞춰 새로 구성했습니다.</footer>
+  </main>`;
+  $('#stu').addEventListener('input',e=>store.set('gdu-name',e.target.value));
+}
+
+/* ---------- chapter page ---------- */
+function chapter(n){
+  const c = CH[n-1]; state[n]=state[n]||{}; marks[n]=marks[n]||{};
+  const T = total(c);
+  const prev = CH[n-2], next = CH[n];
+  $('#app').innerHTML = `
+  <div class="studybar"><div class="wrap">
+    <div class="sb-row">
+      <a class="home" href="../">← 전체 단원</a><span class="unit-tag">UNIDAD ${n}</span>
+      <span class="sb-spacer"></span>
+      <span class="count" id="count">답한 문제 0 / ${T}</span>
+      <button class="btn" id="gradeBtn">채점하기</button>
+    </div>
+    <div class="keys" aria-label="스페인어 특수문자 입력"><span>입력 도우미</span>${['á','é','í','ó','ú','ñ','ü','¿','¡'].map(k=>`<button type="button" data-k="${k}">${k}</button>`).join('')}</div>
+  </div></div>
+  <header class="col ch-head"><div class="no">UNIDAD ${n}</div><h1>${c.es}<small>${c.ko}</small></h1></header>
+  <main class="col">
+    <section class="theory">${fmtTheory(c.theory)}</section>
+    ${c.ex.map((e,ei)=>exHTML(n,e,ei)).join('')}
+    <section class="result" id="result" hidden aria-live="polite"></section>
+    <div class="pager">${n>1?`<a href="../Unidad${n-1}/">← Unidad ${n-1}</a>`:'<span></span>'}${n<107?`<a href="../Unidad${n+1}/">Unidad ${n+1} →</a>`:'<span></span>'}</div>
+  </main>`;
+  // restore state
+  c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{
+    const k=`${ei}-${ii}`, v=state[n][k]; const li=document.getElementById(`i-${k}`);
+    if(v!==undefined && v!==''){ if(it.t==='text') li.querySelector('input').value=v; else setPick(li,it,v); }
+    if(marks[n][k]) showMark(n,ei,ii);
+  }));
+  updateCount(n);
+  $('#gradeBtn').addEventListener('click',()=>grade(n));
+  document.querySelector('.keys').addEventListener('mousedown',e=>{ if(e.target.dataset.k) e.preventDefault(); });
+  document.querySelector('.keys').addEventListener('click',e=>{
+    const k=e.target.dataset.k; if(!k) return;
+    const inp = focusedInput && document.body.contains(focusedInput) ? focusedInput : null;
+    if(!inp) return;
+    const s=inp.selectionStart??inp.value.length, en=inp.selectionEnd??s;
+    inp.value=inp.value.slice(0,s)+k+inp.value.slice(en); inp.setSelectionRange(s+1,s+1); inp.focus();
+    inp.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  if(Object.keys(lastResult[n]||{}).length) renderResult(n,false);
+}
+const lastResult = {};
+
+
+const NOBREAK='(?<!\\bSra?)(?<!\\bDra?)(?<!\\bSrta)(?<!\\bUds?)(?<!\\bEE)';
+function fmtQ(s){
+  if(!s) return s;
+  s=s.replace(/ (?=–)/g,'<br>');
+  s=s.replace(new RegExp('(?<![A-Za-z]\\.[A-Z])'+NOBREAK+'([.!?…])\\s+(?=[¿¡A-ZÁÉÍÓÚÑ(\\[])','g'),'$1<br>');
+  return s;
+}
+function fmtTheory(h){
+  const ES='<span class="es"';
+  h=h.replace(/<\/span>(?:\s*[·\/]\s*|\s+)(?=<span class=\"es\")/g,'</span><br>');
+  h=h.replace(/(<span class="es"[^>]*>)([^<]*)(<\/span>)/g,(m,a,t,c)=>a+fmtQ(t)+c);
+  h=h.replace(/(<br>)\s*(<br>)/g,'$1');
+  h=h.replace(/(:\s*)(<span class="es"[^>]*>[^<]*<\/span><br><span class="es")/g,'$1<br>$2');
+  return h;
+}
+function exHTML(n,e,ei){
+  return `<section class="ex" id="ex${ei}">
+    <div class="ex-head"><h2>${e.title}</h2><span class="ex-score" id="sc${ei}"></span></div>
+    <p class="instr">${e.instr}</p>
+    <ol class="items">${e.items.map((it,ii)=>{
+      const k=`${ei}-${ii}`; const [a,b]=it.q.split('___').map(fmtQ);
+      const body = it.t==='text'
+        ? `${a}<input type="text" id="in-${n}-${k}" data-k="${k}" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="${ii+1}번 답">${b||''}`
+        : `${a}<span class="blank" id="bl-${n}-${k}"></span>${b||''}<div class="opts" role="radiogroup" aria-label="${ii+1}번 선택지">${it.o.map(o=>`<button type="button" role="radio" aria-checked="false" data-k="${k}" data-v="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>`;
+      return `<li class="item" id="i-${k}"><span class="n">${ii+1}</span><div class="q">${body}</div><div class="fb" id="fb-${k}"></div></li>`;
+    }).join('')}</ol></section>`;
+}
+
+function setPick(li,it,v){
+  li.querySelector('.blank').textContent=v;
+  li.querySelectorAll('.opts button').forEach(b=>b.setAttribute('aria-checked',b.dataset.v===v?'true':'false'));
+}
+function clearMark(n,k){
+  delete marks[n][k]; const li=document.getElementById('i-'+k); if(!li) return;
+  li.classList.remove('ok','bad','half'); document.getElementById('fb-'+k).innerHTML='';
+}
+function updateCount(n){
+  const c=CH[n-1]; let a=0; c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{ const v=state[n][`${ei}-${ii}`]; if(v!==undefined&&v!=='') a++; }));
+  const el=$('#count'); if(el) el.textContent=`답한 문제 ${a} / ${total(c)}`; return a;
+}
+
+document.addEventListener('focusin',e=>{ if(e.target.matches && e.target.matches('.q input')) focusedInput=e.target; });
+document.addEventListener('input',e=>{
+  const t=e.target; if(!t.matches||!t.matches('.q input')) return;
+  const n=curChapter(); const k=t.dataset.k; state[n][k]=t.value; clearMark(n,k); updateCount(n);
+});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.opts button'); if(!b) return;
+  const n=curChapter(); const k=b.dataset.k; const [ei,ii]=k.split('-').map(Number); const it=CH[n-1].ex[ei].items[ii];
+  state[n][k]=b.dataset.v; setPick(document.getElementById('i-'+k),it,b.dataset.v); clearMark(n,k); updateCount(n);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target.matches && e.target.matches('.q input')){
+    const ins=[...document.querySelectorAll('.q input')]; const i=ins.indexOf(e.target); if(ins[i+1]) ins[i+1].focus();
+  }
+});
+const curChapter = () => SINGLE;
+
+/* ---------- grading ---------- */
+const strip = s => s.replace(/ñ/g,'\u0001').normalize('NFD').replace(/[̀-ͯ]/g,'');
+const norm = s => s.toLowerCase().trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');
+function judge(it,v){
+  if(v===undefined||v==='') return 'none';
+  if(it.t==='pick') return v===it.a?'ok':'bad';
+  const x=norm(v);
+  if(it.a.some(a=>norm(a)===x)) return 'ok';
+  if(it.a.some(a=>strip(norm(a))===strip(x))) return 'half';
+  return 'bad';
+}
+function showMark(n,ei,ii){
+  const k=`${ei}-${ii}`, it=CH[n-1].ex[ei].items[ii], m=marks[n][k], li=document.getElementById('i-'+k), fb=document.getElementById('fb-'+k);
+  li.classList.remove('ok','bad','half'); if(!m) return; li.classList.add(m);
+  const ans = it.t==='pick'?it.a:it.a[0]; const rule = CH[n-1].ex[ei].rule;
+  const why = it.why||rule;
+  const head = m==='ok'?'✔ 정답':m==='half'?`△ 악센트(´) 확인 · 정답 <b>${ans}</b> (0.5점)`:`✘ 오답 · 정답 <b>${ans}</b>`;
+  fb.innerHTML = head + (why?`<span class="why"><b>해설</b> ${why}</span>`:'');
+}
+function grade(n){
+  const c=CH[n-1]; const res={ex:[],score:0,total:0,blank:0};
+  c.ex.forEach((e,ei)=>{
+    let s=0;
+    e.items.forEach((it,ii)=>{
+      const k=`${ei}-${ii}`, j=judge(it,state[n][k]);
+      if(j==='none'){ marks[n][k]='bad'; res.blank++; } else marks[n][k]=j;
+      if(j==='ok') s+=1; else if(j==='half') s+=.5;
+      showMark(n,ei,ii);
+      if(j==='none'){ document.getElementById('fb-'+k).innerHTML='✘ 미응답 · 정답 <b>'+(it.t==='pick'?it.a:it.a[0])+'</b>'+`<span class="why"><b>해설</b> ${it.why||e.rule}</span>`; }
+    });
+    document.getElementById('sc'+ei).textContent=`${fmt(s)} / ${e.items.length}`;
+    res.ex.push({title:e.title,s,t:e.items.length}); res.score+=s; res.total+=e.items.length;
+  });
+  lastResult[n]=res;
+  const pr=progress(); const old=pr['ch'+n];
+  if(!old||res.score>=old.score){ pr['ch'+n]={score:res.score,total:res.total}; store.set('gdu-progress',pr); }
+  renderResult(n,true);
+}
+function renderResult(n,scroll){
+  const res=lastResult[n], pct=Math.round(res.score/res.total*100), name=(store.get('gdu-name')||'').trim();
+  const msg = pct>=90?['훌륭해요!','거의 완벽합니다. 다음 단원으로 넘어가도 좋아요.']:pct>=70?['잘했어요!','틀린 문제의 해설을 읽고 다시 도전해 보세요.']:pct>=50?['조금만 더!','문법 정리를 한 번 더 읽고 틀린 문제를 다시 풀어 보세요.']:['다시 도전해요','문법 정리를 천천히 읽고 예문을 소리 내어 따라 해 보세요.'];
+  const R=54, C=2*Math.PI*R;
+  const el=$('#result'); el.hidden=false;
+  el.innerHTML=`
+   <div class="r-top">
+    <div class="ring"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="bg" cx="66" cy="66" r="${R}"/><circle class="fg" cx="66" cy="66" r="${R}" stroke-dasharray="${C*pct/100} ${C}"/></svg><b>${pct}%</b></div>
+    <div class="r-txt"><div class="eyebrow">${name?name+' · ':''}UNIDAD ${n} 결과</div><h2>${fmt(res.score)} / ${res.total}점 · ${msg[0]}</h2><p>${msg[1]}</p>${res.blank?`<p>풀지 않은 문제가 ${res.blank}개 있어요. 오답으로 처리되었습니다.</p>`:''}</div>
+   </div>
+   <div class="brk">${res.ex.map(e=>`<div><span>${e.title}</span><span class="bar"><i style="width:${e.s/e.t*100}%"></i></span><span>${fmt(e.s)}/${e.t}</span></div>`).join('')}</div>
+   <div class="r-act"><button class="btn" id="retryWrong">틀린 문제만 다시 풀기</button><button class="btn ghost" id="retryAll">처음부터 다시 풀기</button></div>`;
+  $('#retryWrong').onclick=()=>retry(n,false); $('#retryAll').onclick=()=>retry(n,true);
+  if(scroll) el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function retry(n,all){
+  const c=CH[n-1];
+  c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{
+    const k=`${ei}-${ii}`, m=marks[n][k];
+    if(all || m!=='ok'){
+      delete state[n][k]; clearMark(n,k); const li=document.getElementById('i-'+k);
+      if(it.t==='text') li.querySelector('input').value=''; else { li.querySelector('.blank').textContent=''; li.querySelectorAll('.opts button').forEach(b=>b.setAttribute('aria-checked','false')); }
+    }
+  }));
+  c.ex.forEach((e,ei)=>{ $('#sc'+ei).textContent=''; });
+  delete lastResult[n]; $('#result').hidden=true; updateCount(n);
+  const first=document.querySelector('li.item:not(.ok)'); if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); else window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- router ---------- */
+function route(){
+  chapter(SINGLE);
+  window.scrollTo(0,0);
+}
+route();
+</script>
