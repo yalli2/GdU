@@ -234,7 +234,7 @@ function chapter(n){
   </div></div>
   <header class="col ch-head"><div class="no">UNIDAD ${n}</div><h1>${c.es}<small>${c.ko}</small></h1></header>
   <main class="col">
-    <section class="theory">${c.theory}</section>
+    <section class="theory">${fmtTheory(c.theory)}</section>
     ${c.ex.map((e,ei)=>exHTML(n,e,ei)).join('')}
     <section class="result" id="result" hidden aria-live="polite"></section>
     <div class="pager">${n>1?`<a href="../Unidad${n-1}/">← Unidad ${n-1}</a>`:'<span></span>'}${n<30?`<a href="../Unidad${n+1}/">Unidad ${n+1} →</a>`:'<span></span>'}</div>
@@ -260,12 +260,28 @@ function chapter(n){
 }
 const lastResult = {};
 
+
+const NOBREAK='(?<!\\bSra?)(?<!\\bDra?)(?<!\\bSrta)(?<!\\bUds?)(?<!\\bEE)';
+function fmtQ(s){
+  if(!s) return s;
+  s=s.replace(/ (?=–)/g,'<br>');
+  s=s.replace(new RegExp('(?<![A-Za-z]\\.[A-Z])'+NOBREAK+'([.!?…])\\s+(?=[¿¡A-ZÁÉÍÓÚÑ(\\[])','g'),'$1<br>');
+  return s;
+}
+function fmtTheory(h){
+  const ES='<span class="es"';
+  h=h.replace(/<\/span>(?:\s*[·\/]\s*|\s+)(?=<span class=\"es\")/g,'</span><br>');
+  h=h.replace(/(<span class="es"[^>]*>)([^<]*)(<\/span>)/g,(m,a,t,c)=>a+fmtQ(t)+c);
+  h=h.replace(/(<br>)\s*(<br>)/g,'$1');
+  h=h.replace(/(:\s*)(<span class="es"[^>]*>[^<]*<\/span><br><span class="es")/g,'$1<br>$2');
+  return h;
+}
 function exHTML(n,e,ei){
   return `<section class="ex" id="ex${ei}">
     <div class="ex-head"><h2>${e.title}</h2><span class="ex-score" id="sc${ei}"></span></div>
     <p class="instr">${e.instr}</p>
     <ol class="items">${e.items.map((it,ii)=>{
-      const k=`${ei}-${ii}`; const [a,b]=it.q.split('___');
+      const k=`${ei}-${ii}`; const [a,b]=it.q.split('___').map(fmtQ);
       const body = it.t==='text'
         ? `${a}<input type="text" id="in-${n}-${k}" data-k="${k}" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="${ii+1}번 답">${b||''}`
         : `${a}<span class="blank" id="bl-${n}-${k}"></span>${b||''}<div class="opts" role="radiogroup" aria-label="${ii+1}번 선택지">${it.o.map(o=>`<button type="button" role="radio" aria-checked="false" data-k="${k}" data-v="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>`;
