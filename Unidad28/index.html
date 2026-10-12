@@ -1,0 +1,379 @@
+<title>Gramática en Clase · Unidad 28</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: sticky study bar + single reading column; main page is a chapter grid with a 3-step method strip */
+:root{
+  --bg:#F3F5F9; --surface:#FFFFFF; --ink:#172033; --muted:#5B6679; --line:#DDE2EC;
+  --accent:#B8283F; --accent-ink:#FFFFFF; --accent-soft:#FBE4E8;
+  --gold:#F2B705; --gold-soft:#FFF3C4; --chip:#E8EDF6;
+  --ok:#12805C; --ok-soft:#DDF4EA; --bad:#C0302B; --bad-soft:#FDE3E1; --half:#8A5600; --half-soft:#FFF0CC;
+  --f-display:"Bricolage Grotesque","Noto Sans KR",system-ui,sans-serif;
+  --f-body:"Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1522; --surface:#182033; --ink:#ECEFF6; --muted:#9AA6BC; --line:#2A3550;
+  --accent:#F0627A; --accent-ink:#1A0509; --accent-soft:#3B1A24; --gold:#F2B705; --gold-soft:#3A3010; --chip:#222C45;
+  --ok:#4FD1A0; --ok-soft:#12382D; --bad:#FF7A74; --bad-soft:#43201F; --half:#F2B705; --half-soft:#3A3010; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1522; --surface:#182033; --ink:#ECEFF6; --muted:#9AA6BC; --line:#2A3550;
+  --accent:#F0627A; --accent-ink:#1A0509; --accent-soft:#3B1A24; --gold:#F2B705; --gold-soft:#3A3010; --chip:#222C45;
+  --ok:#4FD1A0; --ok-soft:#12382D; --bad:#FF7A74; --bad-soft:#43201F; --half:#F2B705; --half-soft:#3A3010; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;margin:0}
+h1,h2,h3{font-family:var(--f-display);line-height:1.2;text-wrap:balance;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:980px;margin-inline:auto;padding-inline:16px}
+.col{max-width:780px;margin-inline:auto;padding-inline:16px}
+.es{font-style:italic;font-weight:500;cursor:pointer;border-bottom:1.5px dotted var(--accent);white-space:normal}
+.es:hover{background:var(--accent-soft)}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+/* ===== main ===== */
+.hero{padding-block:48px 28px}
+.hero h1{font-size:clamp(2.4rem,7vw,4rem);font-weight:800;letter-spacing:-.02em}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{max-width:60ch;color:var(--muted);margin:14px 0 0}
+.who{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;margin-top:24px}
+.who label{font-weight:700;font-size:.9rem}
+.who input{font:inherit;padding:10px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);width:min(100%,260px)}
+.overall{display:flex;align-items:center;gap:10px;font-size:.92rem;color:var(--muted)}
+.bar{height:8px;border-radius:99px;background:var(--chip);overflow:hidden;min-width:120px;flex:1}
+.bar>i{display:block;height:100%;background:var(--accent);border-radius:99px;transition:width .4s}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-block:8px 36px;padding:0;list-style:none;counter-reset:s}
+.steps li{counter-increment:s;background:var(--gold-soft);border-radius:14px;padding:14px 16px;font-size:.92rem}
+.steps li::before{content:counter(s);display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:#241a00;font-weight:800;margin-right:8px;font-family:var(--f-display)}
+.steps b{display:inline}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px;padding-bottom:48px}
+.card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;text-decoration:none;transition:transform .15s,box-shadow .15s;min-width:0}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(20,30,60,.12)}
+.card .no{font-family:var(--f-display);font-weight:800;font-size:3.4rem;line-height:1;color:var(--accent)}
+.card h2{font-size:1.35rem;font-style:italic}
+.card .ko{font-weight:700}
+.card .desc{color:var(--muted);font-size:.9rem;flex:1}
+.card .meta{display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--muted);flex-wrap:wrap}
+.card .go{font-weight:700;color:var(--accent)}
+.card.soon{background:transparent;border-style:dashed;justify-content:center;color:var(--muted);pointer-events:none}
+footer.site{padding-block:0 48px;color:var(--muted);font-size:.84rem}
+
+/* ===== chapter ===== */
+.studybar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.sb-row{display:flex;align-items:center;gap:10px;padding-block:8px;flex-wrap:wrap}
+.home{text-decoration:none;font-weight:700;font-size:.92rem;padding:6px 10px;border-radius:8px;background:var(--chip)}
+.tabs{display:flex;gap:6px}
+.tabs a{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;text-decoration:none;font-weight:700;font-family:var(--f-display);background:var(--chip)}
+.tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
+.sb-spacer{flex:1}
+.count{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.btn{border:0;border-radius:10px;padding:9px 16px;font-weight:700;background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:var(--chip);color:var(--ink)}
+.btn:hover{filter:brightness(1.07)}
+.keys{display:flex;gap:6px;flex-wrap:wrap;padding-bottom:8px}
+.keys button{min-width:34px;height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);font-weight:700}
+.keys span{font-size:.78rem;color:var(--muted);align-self:center;margin-right:4px}
+
+.ch-head{padding-block:36px 12px}
+.ch-head .no{font-family:var(--f-display);font-weight:800;color:var(--accent);font-size:1rem;letter-spacing:.1em}
+.ch-head h1{font-size:clamp(2rem,6vw,3rem);font-style:italic;font-weight:800;margin-top:4px}
+.ch-head h1 small{display:block;font-size:.5em;font-style:normal;font-weight:500;color:var(--muted);margin-top:4px}
+section.theory{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin-block:18px}
+section.theory h2{font-size:1.3rem;margin-bottom:10px}
+section.theory h3{font-size:1.05rem;margin:22px 0 8px}
+section.theory p{margin:8px 0}
+.tip{font-size:.84rem;color:var(--muted);margin:0 0 4px}
+.tw{overflow-x:auto;margin-block:10px}
+table{border-collapse:collapse;width:100%;min-width:480px;font-size:.95rem}
+th{background:var(--accent);color:var(--accent-ink);text-align:left;padding:8px 12px;font-size:.85rem}
+td{padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.note{border-radius:12px;padding:12px 14px;margin-block:12px;font-size:.95rem}
+.note.warn{background:var(--gold-soft)}
+.note.pero{background:var(--accent-soft)}
+.note b.lab{font-family:var(--f-display);letter-spacing:.06em;margin-right:6px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:8px}
+.chips .es{background:var(--chip);border:0;padding:3px 10px;border-radius:99px}
+ul.rules{padding-left:1.2em;margin:8px 0}
+ul.rules li{margin-block:4px}
+
+.ex{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;margin-block:18px}
+.ex-head{display:flex;gap:12px;align-items:baseline;justify-content:space-between;flex-wrap:wrap;margin-bottom:6px}
+.ex-head h2{font-size:1.2rem}
+.ex-score{font-family:var(--f-display);font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.ex p.instr{margin:0 0 14px;color:var(--muted);font-size:.93rem}
+ol.items{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+li.item{display:grid;grid-template-columns:28px 1fr;gap:8px;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;min-width:0;align-items:start}
+li.item .n{font-size:.8rem;font-weight:700;color:var(--muted);padding-top:3px;font-variant-numeric:tabular-nums}
+.q{min-width:0;overflow-wrap:anywhere}
+.q input{font:inherit;font-style:italic;width:9.5em;max-width:100%;padding:3px 8px;margin-inline:4px;border:0;border-bottom:2px solid var(--accent);background:var(--chip);color:var(--ink);border-radius:6px 6px 0 0}
+.blank{display:inline-block;min-width:3.4em;text-align:center;margin-inline:4px;padding:0 8px;border-bottom:2px solid var(--accent);background:var(--chip);border-radius:6px 6px 0 0;font-style:italic;font-weight:500;min-height:1.5em;vertical-align:bottom}
+.opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.opts button{border:1.5px solid var(--line);background:var(--bg);border-radius:9px;padding:3px 12px;font-style:italic;font-size:.95rem}
+.opts button[aria-checked="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fb{font-size:.86rem;margin-top:6px;grid-column:2}
+li.item.ok{border-color:var(--ok);background:var(--ok-soft)}
+li.item.bad{border-color:var(--bad);background:var(--bad-soft)}
+li.item.half{border-color:var(--half);background:var(--half-soft)}
+li.item.ok .fb{color:var(--ok)} li.item.bad .fb{color:var(--bad)} li.item.half .fb{color:var(--half)}
+.fb b{font-style:italic}
+.fb .why{display:block;color:var(--ink);opacity:.85;margin-top:4px;line-height:1.55}.fb .why b{font-style:normal;font-family:var(--f-display);font-size:.78rem;letter-spacing:.05em;color:var(--muted);margin-right:4px}.unit-tag{font-family:var(--f-display);font-weight:800;color:var(--accent)}
+
+.result{background:var(--surface);border:2px solid var(--accent);border-radius:20px;padding:24px;margin-block:24px}
+.result[hidden]{display:none}
+.r-top{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.ring{position:relative;width:132px;height:132px;flex:none}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:12}
+.ring .bg{stroke:var(--chip)} .ring .fg{stroke:var(--accent);stroke-linecap:round;transition:stroke-dasharray .8s}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:1.9rem;font-weight:800}
+.r-txt{min-width:0;flex:1}
+.r-txt h2{font-size:1.6rem}
+.r-txt p{margin:6px 0;color:var(--muted)}
+.brk{margin-top:18px;display:grid;gap:8px}
+.brk div{display:grid;grid-template-columns:minmax(0,1fr) 90px 60px;gap:10px;align-items:center;font-size:.9rem}
+.brk .bar{min-width:0}
+.brk span:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.r-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-block:12px 56px}
+.pager a{text-decoration:none;font-weight:700;padding:12px 18px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+@media (max-width:520px){ol.items{grid-template-columns:1fr}.brk div{grid-template-columns:minmax(0,1fr) 60px 52px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div id="app"></div>
+
+<script>
+const E = t => `<span class="es" role="button" tabindex="0" data-say="${t.replace(/"/g,'&quot;')}">${t}</span>`;
+const chips = arr => `<div class="chips">${arr.map(E).join('')}</div>`;
+const tbl = (head, rows) => `<div class="tw"><table><thead><tr>${head.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+const warn = h => `<div class="note warn"><b class="lab">ATENCIÓN</b>${h}</div>`;
+const pero = h => `<div class="note pero"><b class="lab">PERO</b>${h}</div>`;
+const ELLA = ['el','la'];
+const pk = (q,o,a,why) => ({t:'pick',q,o,a,why});
+const tx = (q,a,why) => ({t:'text',q,a:Array.isArray(a)?a:[a],why});
+
+const X = (title,instr,rule,items) => ({title,instr,rule,items});
+const P = (o,rows) => rows.map(r=>pk(r[0],o,r[1],r[2]));
+const T = rows => rows.map(r=>tx(r[0],r[1],r[2]));
+const DEF = ['el','la','los','las'];
+const INDEF = ['un','una','unos','unas'];
+
+const CH = [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,{"id":28,"es":"yo, tú, él…","ko":"주격 인칭대명사","desc":"yo, tú, usted, él, ella, nosotros… 의 형태, tú와 usted의 구분, 주어 대명사를 쓰는 경우와 생략하는 경우를 배웁니다.","theory":"\n<h2>핵심 정리</h2>\n<p class=\"tip\">🔊 예문을 누르면 발음을 들을 수 있어요.</p>\n<div class=\"tw\"><table><thead><tr><th></th><th>단수</th><th>복수</th></tr></thead><tbody><tr><td>1인칭</td><td><b>yo</b></td><td><b>nosotros</b> (남성 포함) / <b>nosotras</b> (모두 여성)</td></tr><tr><td>2인칭 (친근)</td><td><b>tú</b></td><td><b>vosotros</b> / <b>vosotras</b></td></tr><tr><td>2인칭 (존칭)</td><td><b>usted</b></td><td><b>ustedes</b></td></tr><tr><td>3인칭</td><td><b>él</b> / <b>ella</b></td><td><b>ellos</b> (남성 포함) / <b>ellas</b> (모두 여성)</td></tr></tbody></table></div>\n<div class=\"note warn\"><b class=\"lab\">ATENCIÓN</b><b>혼합 규칙</b><br>tú + yo = nosotros/-as · (tú +) él/ella + yo = nosotros/-as · 남성 + 여성 = <b>남성 복수</b><br><span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Ella, él y yo = nosotros\">Ella, él y yo = nosotros</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Ella y él = ellos\">Ella y él = ellos</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Ella, él y tú = vosotros\">Ella, él y tú = vosotros</span></div>\n<h3>tú, usted, vosotros, ustedes</h3>\n<ul class=\"rules\">\n<li><b>tú / vosotros(-as)</b>: 가족, 친구, 동료, 젊은 사람들과 쓰는 <b>친근한</b> 표현.</li>\n<li><b>usted / ustedes</b>: 모르는 사람, 윗사람, 나이가 많은 분께 쓰는 <b>존칭</b> 표현. 동사는 3인칭을 씁니다: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Don Ricardo, ¿dónde vive usted?\">Don Ricardo, ¿dónde vive usted?</span></li>\n<li>중남미와 카나리아 제도 등에서는 vosotros 대신 <b>ustedes</b>를 친근한 말에도 씁니다.</li>\n</ul>\n<h3>주어 대명사를 쓰는 경우 / 생략하는 경우</h3>\n<ul class=\"rules\">\n<li>스페인어는 동사 어미로 주어를 알 수 있어 <b>보통 생략</b>합니다: ✗ <i>Yo vivo en Bogotá.</i> → <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Vivo en Bogotá.\">Vivo en Bogotá.</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"¿Dónde trabajas?\">¿Dónde trabajas?</span></li>\n<li><b>대조</b>할 때: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Yo soy de Alicante, ¿y tú?\">Yo soy de Alicante, ¿y tú?</span></li>\n<li><b>강조</b>할 때: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Yo quiero trabajar, pero mis padres no quieren.\">Yo quiero trabajar, pero mis padres no quieren.</span></li>\n<li>누구인지 <b>분명히 해야 할 때</b>(3인칭 등): <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Mira, allí van Silvia y Jorge. Son peruanos. Él es de Arequipa y ella es de Lima.\">Mira, allí van Silvia y Jorge. Son peruanos. Él es de Arequipa y ella es de Lima.</span></li>\n<li>주어가 <b>다른 사람과 함께</b> 나올 때: <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Alicia y tú parecéis hermanas.\">Alicia y tú parecéis hermanas.</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Mi padre y yo somos buenos amigos.\">Mi padre y yo somos buenos amigos.</span></li>\n<li><b>usted, ustedes</b>는 생략하지 않는 편이 자연스러운 경우가 많습니다. (3인칭 동사와 구별하기 위해): <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Usted no es peruano, ¿verdad?\">Usted no es peruano, ¿verdad?</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"Ustedes no son franceses, ¿verdad? –No, somos belgas.\">Ustedes no son franceses, ¿verdad? –No, somos belgas.</span></li>\n<li><b>누구인지 묻는 대답</b>(주체를 가리킬 때): <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"–¿Quién es Hans Liebe? –(Soy) yo.\">–¿Quién es Hans Liebe? –(Soy) yo.</span> · <span class=\"es\" role=\"button\" tabindex=\"0\" data-say=\"–¿Quién quiere ir a la excursión? –Nosotras.\">–¿Quién quiere ir a la excursión? –Nosotras.</span></li>\n</ul>","ex":[{"title":"연습 1. 알맞은 대명사 고르기","instr":"( ) 안의 설명에 알맞은 주격 인칭대명사를 고르세요.","rule":"성(남/여)과 수(단/복), 그리고 친근한 말(tú, vosotros)과 존칭(usted, ustedes)을 구분합니다.","items":[{"t":"pick","q":"(말하는 사람 자신) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"yo","why":"1인칭 단수 → <b>yo</b>."},{"t":"pick","q":"(친구 한 명에게 말할 때) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"tú","why":"친근한 2인칭 단수 → <b>tú</b>."},{"t":"pick","q":"(처음 만난 연장자 한 분에게) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"usted","why":"존칭 2인칭 단수 → <b>usted</b>."},{"t":"pick","q":"(남자 한 명을 가리켜) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"él","why":"3인칭 남성 단수 → <b>él</b> (악센트 있음)."},{"t":"pick","q":"(여자 한 명을 가리켜) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"ella","why":"3인칭 여성 단수 → <b>ella</b>."},{"t":"pick","q":"(남자 둘 이상, 또는 남녀 섞인 그룹을 가리켜) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"ellos","why":"남녀 혼합 → 남성 복수 <b>ellos</b>."},{"t":"pick","q":"(여자들만 가리켜) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"ellas","why":"모두 여성 → <b>ellas</b>."},{"t":"pick","q":"(나와 남자 친구들) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"nosotros","why":"남성 포함 1인칭 복수 → <b>nosotros</b>."},{"t":"pick","q":"(나와 여자들만) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"nosotras","why":"모두 여성 → <b>nosotras</b>."},{"t":"pick","q":"(친한 친구 남자들에게) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"vosotros","why":"친근한 2인칭 복수 남성 → <b>vosotros</b>."},{"t":"pick","q":"(친한 친구 여자들에게) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"vosotras","why":"모두 여성 → <b>vosotras</b>."},{"t":"pick","q":"(처음 만난 여러 사람에게) ___","o":["yo","tú","usted","él","ella","nosotros","nosotras","vosotros","vosotras","ustedes","ellos","ellas"],"a":"ustedes","why":"존칭 2인칭 복수 → <b>ustedes</b>."}]},{"title":"연습 2. 그룹을 대명사로","instr":"주어 그룹에 해당하는 주격 인칭대명사를 쓰세요. (남성 + 여성 = 남성 복수)","rule":"사람들의 성별 조합으로 정합니다. 혼성이면 남성 복수형을 씁니다.","items":[{"t":"text","q":"Sofía y Alberto: ___","a":["ellos"],"why":"여성 + 남성 → 남성 복수 <b>ellos</b>."},{"t":"text","q":"Tú, Juan y yo: ___","a":["nosotros"],"why":"나를 포함 → <b>nosotros</b>. (Juan이 남성이므로)"},{"t":"text","q":"Sofía y Luisa: ___","a":["ellas"],"why":"모두 여성 → <b>ellas</b>."},{"t":"text","q":"Juan y tú: ___","a":["vosotros"],"why":"너와 Juan(나 제외) → <b>vosotros</b>."},{"t":"text","q":"Luis y Andrés: ___","a":["ellos"],"why":"모두 남성 → <b>ellos</b>."},{"t":"text","q":"Luis, mis amigos y yo: ___","a":["nosotros"],"why":"나 포함, 남성 → <b>nosotros</b>."},{"t":"text","q":"Mis padres y tú: ___","a":["vosotros"],"why":"나 제외, 2인칭 포함 → <b>vosotros</b>."},{"t":"text","q":"Mi madre y mi novia: ___","a":["ellas"],"why":"모두 여성 → <b>ellas</b>."},{"t":"text","q":"Ana y yo (둘 다 여자): ___","a":["nosotras"],"why":"나 포함, 모두 여성 → <b>nosotras</b>."},{"t":"text","q":"Usted y su marido: ___","a":["ustedes"],"why":"존칭 복수 → <b>ustedes</b>."}]},{"title":"연습 3. 대명사가 꼭 필요한가?","instr":"Pep(스페인·Barcelona·기자), Concha(스페인·Murcia·학생), Adriana(아르헨티나·Córdoba·간호사), Gabriel(멕시코·Monterrey·기자), Rosita(멕시코·Mérida·학생)의 대화입니다. 빈칸에 알맞은 대명사를 고르세요. 대명사가 필요 없으면 \"(생략)\"을 고르세요.","rule":"대조·강조·구분이 필요할 때만 yo, él, ella 같은 주어를 씁니다. 그렇지 않으면 생략합니다.","items":[{"t":"pick","q":"Pep: Concha y ___ somos españoles.","o":["yo","tú","(생략)"],"a":"yo","why":"\"Concha와 나\"처럼 다른 사람과 같이 나올 때는 주어를 씁니다 → Concha y <b>yo</b>."},{"t":"pick","q":"Pep: Concha y yo somos españoles. ___ es de Murcia y yo soy de Barcelona.","o":["ella","él","(생략)"],"a":"ella","why":"두 사람의 출신을 <b>대조</b> → <b>ella</b> es de Murcia."},{"t":"pick","q":"Pep: Ella es de Murcia y ___ soy de Barcelona.","o":["yo","él","(생략)"],"a":"yo","why":"대조 → <b>yo</b> soy de Barcelona."},{"t":"pick","q":"Concha: Gabriel y Rosita son mexicanos. ___ es de Mérida y él es de Monterrey.","o":["ella","tú","(생략)"],"a":"ella","why":"Rosita와 Gabriel을 대조 → <b>ella</b> es de Mérida."},{"t":"pick","q":"Gabriel: Concha y Pep, ¿son españoles? Adriana: Sí, ___ son españoles.","o":["ellos","nosotros","(생략)"],"a":"ellos","why":"3인칭 복수 동사 son 앞에서 누구인지 분명히 함 → <b>ellos</b> son españoles. (생략하면 ustedes와 혼동 가능)"},{"t":"pick","q":"Rosita: Concha y ___ somos estudiantes.","o":["yo","tú","(생략)"],"a":"yo","why":"다른 사람과 같이 나오는 주어 → Concha y <b>yo</b>."},{"t":"pick","q":"Rosita: Ella es española y ___ soy mexicana.","o":["yo","tú","(생략)"],"a":"yo","why":"대조 → <b>yo</b> soy mexicana."},{"t":"pick","q":"–¿De dónde eres? –___ soy de Madrid.","o":["(생략)","yo","tú"],"a":"(생략)","why":"동사 soy만으로 주어가 분명 → <b>생략</b>: Soy de Madrid."}]},{"title":"연습 4. 대명사 쓰기 vs 생략","instr":"알맞은 것을 고르세요.","rule":"생략이 기본입니다. 대조·강조·구분·사람 확인 질문의 대답에는 주어를 씁니다.","items":[{"t":"pick","q":"–¿De dónde sois Adolfo y tú? –___ somos de Uruguay.","o":["Nosotros","Ellos","(생략)"],"a":"(생략)","why":"주어가 분명(우리) → 동사 somos만으로 충분 → <b>생략</b>."},{"t":"pick","q":"Yo soy de Alicante, ¿___?","o":["tú","ti","te"],"a":"tú","why":"대조 → <b>tú</b> (주격 인칭대명사)."},{"t":"pick","q":"Mira, allí van Silvia y Jorge. Son peruanos. ___ es de Arequipa y ella es de Lima.","o":["Él","Ella","(생략)"],"a":"Él","why":"Jorge와 Silvia를 대조 → <b>Él</b> es de Arequipa."},{"t":"pick","q":"Mira, allí van Silvia y Jorge. Son peruanos. Él es de Arequipa y ___ es de Lima.","o":["él","ella","(생략)"],"a":"ella","why":"Silvia → <b>ella</b> es de Lima."},{"t":"pick","q":"Alicia y ___ parecéis hermanas.","o":["tú","ti","vosotras"],"a":"tú","why":"다른 사람과 같이 나오는 주어, 동사 parecéis(2인칭 복수) → Alicia y <b>tú</b>."},{"t":"pick","q":"Mi padre y ___ somos buenos amigos.","o":["yo","mí","nosotros"],"a":"yo","why":"다른 사람과 같이 나오는 주어 → Mi padre y <b>yo</b>."},{"t":"pick","q":"Don Ricardo, ¿dónde vive ___?","o":["tú","usted","él"],"a":"usted","why":"존칭으로 이름 앞에 don을 붙인 연장자 → <b>usted</b>."},{"t":"pick","q":"–¿Dónde trabajas ___?","o":["(생략)","tú","usted"],"a":"(생략)","why":"동사 trabajas가 tú를 이미 나타냄 → <b>생략</b>."},{"t":"pick","q":"___ no son franceses, ¿verdad? –No, somos belgas.","o":["Ustedes","Vosotros","(생략)"],"a":"Ustedes","why":"3인칭 복수 동사만으로는 ellos와 혼동되므로 <b>Ustedes</b>를 씁니다."},{"t":"pick","q":"–¿Quién es Hans Liebe? –(Soy) ___.","o":["yo","mí","me"],"a":"yo","why":"누구인지 확인하는 대답 → <b>yo</b>."},{"t":"pick","q":"–¿Quién quiere ir a la excursión? –___. (여자들)","o":["Nosotras","Nosotros","Ellas"],"a":"Nosotras","why":"\"우리 여자들이요\" → <b>Nosotras</b>."},{"t":"pick","q":"–¿Quién es Marina? –___.","o":["Ella","Él","Yo"],"a":"Ella","why":"여자 한 명을 가리켜 → <b>Ella</b>."},{"t":"pick","q":"___ quiero trabajar, pero mis padres no quieren.","o":["Yo","(생략)","Tú"],"a":"Yo","why":"나와 부모님을 <b>대조·강조</b> → <b>Yo</b>."},{"t":"pick","q":"–¿Quiere ___ algo, Sr. Hernández?","o":["usted","tú","(생략)"],"a":"usted","why":"주어가 존칭이므로 쓰는 편이 자연스럽다: ¿Quiere <b>usted</b> algo? 동사 quiere는 él/ella/usted 모두 가능하므로 usted를 명시합니다."}]},{"title":"연습 5. tú 인가 usted 인가","instr":"상황에 알맞은 2인칭 대명사를 고르세요.","rule":"친구·가족·동년배에게는 tú/vosotros, 처음 만난 사람·연장자·손님에게는 usted/ustedes(스페인에서는 둘 이상의 친구에게는 vosotros).","items":[{"t":"pick","q":"(학교 친구에게) ¿De dónde eres ___?","o":["tú","usted","ustedes"],"a":"tú","why":"친구 → <b>tú</b>."},{"t":"pick","q":"(처음 만난 선생님께) ¿De dónde es ___?","o":["tú","usted","vosotros"],"a":"usted","why":"선생님(존칭) → <b>usted</b>."},{"t":"pick","q":"(친구 둘에게, 스페인) ¿___ sois hermanos?","o":["Vosotros","Ustedes","Ellos"],"a":"Vosotros","why":"친구들 → <b>vosotros</b>."},{"t":"pick","q":"(손님 여러 명에게) ¿___ quieren tomar algo?","o":["Vosotros","Ustedes","Nosotros"],"a":"Ustedes","why":"손님 → 존칭 복수 <b>ustedes</b>(동사 quieren)."},{"t":"pick","q":"(할머니께) ¿Cómo está ___?","o":["tú","usted","él"],"a":"usted","why":"연장자(존칭 문화권) → <b>usted</b>."},{"t":"pick","q":"(남동생에게) ¿Qué haces ___?","o":["(생략)","usted","él"],"a":"(생략)","why":"동사 haces가 이미 tú를 나타냄 → <b>생략</b>."}]}]}];
+const SINGLE = 28;
+window.__CH = CH;
+
+/* ---------- state ---------- */
+const $ = s => document.querySelector(s);
+const state = {}; // state[ch][key] = value
+const marks = {}; // marks[ch][key] = 'ok'|'half'|'bad'
+let focusedInput = null;
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+};
+const progress = () => store.get('gdu-progress') || {};
+const total = ch => ch.ex.reduce((n,e)=>n+e.items.length,0);
+const fmt = n => (Math.round(n*10)/10).toString();
+
+function speak(t){
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='es-ES'; u.rate=.9; speechSynthesis.speak(u);}catch(e){}
+}
+document.addEventListener('click',e=>{ const s=e.target.closest('.es'); if(s) speak(s.dataset.say); });
+document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ') && e.target.classList && e.target.classList.contains('es')){ e.preventDefault(); speak(e.target.dataset.say);} });
+
+/* ---------- main page ---------- */
+function main(){
+  const pr = progress(); const name = store.get('gdu-name')||'';
+  const done = CH.filter(c=>pr['ch'+c.id]).length;
+  $('#app').innerHTML = `
+  <header class="wrap hero">
+    <div class="eyebrow">Gramática de uso del español A1–A2 · Unidades 1–5</div>
+    <h1>Gramática <em>en Clase</em></h1>
+    <p>교재 1과부터 5과까지 핵심 문법을 정리하고, 과마다 연습문제를 풀어 바로 점수와 정답을 확인하는 스페인어 학습 사이트입니다.</p>
+    <div class="who">
+      <label for="stu">이름</label><input id="stu" type="text" placeholder="이름을 입력하세요" value="${name.replace(/"/g,'&quot;')}" autocomplete="off">
+      <div class="overall"><span>학습 진도 ${done} / ${CH.length}</span><div class="bar"><i style="width:${done/CH.length*100}%"></i></div></div>
+    </div>
+  </header>
+  <main class="wrap">
+    <ol class="steps"><li><b>문법 정리</b>를 읽고 예문을 눌러 발음을 들어요.</li><li><b>연습문제</b>를 풀어요. 악센트 입력 버튼이 있어요.</li><li><b>채점하기</b>로 점수와 정답, 해설을 확인하고 틀린 문제만 다시 풀어요.</li></ol>
+    <div class="grid">
+    ${CH.map(c=>{const p=pr['ch'+c.id];const t=total(c);return `
+      <a class="card" href="#ch${c.id}">
+        <div class="no">${c.id}</div>
+        <h2>${c.es}</h2>
+        <div class="ko">${c.ko}</div>
+        <div class="desc">${c.desc}</div>
+        <div class="bar"><i style="width:${p?p.score/p.total*100:0}%"></i></div>
+        <div class="meta"><span>${t}문제</span><span>${p?`최고 ${fmt(p.score)} / ${p.total}점`:'아직 풀지 않음'}</span></div>
+        <span class="go">학습하기 →</span>
+      </a>`}).join('')}
+      <div class="card soon"><div class="no">6+</div><div class="ko">다음 단원 준비 중</div><div class="desc">6과 이후는 순서대로 추가할 예정입니다.</div></div>
+    </div>
+    <footer class="site">교재: Gramática de uso del español. Teoría y práctica, Nivel A1–A2 (L. Aragonés, R. Palencia, SM). 연습문제는 교재의 문법 항목에 맞춰 새로 구성했습니다.</footer>
+  </main>`;
+  $('#stu').addEventListener('input',e=>store.set('gdu-name',e.target.value));
+}
+
+/* ---------- chapter page ---------- */
+function chapter(n){
+  const c = CH[n-1]; state[n]=state[n]||{}; marks[n]=marks[n]||{};
+  const T = total(c);
+  const prev = CH[n-2], next = CH[n];
+  $('#app').innerHTML = `
+  <div class="studybar"><div class="wrap">
+    <div class="sb-row">
+      <a class="home" href="../">← 전체 단원</a><span class="unit-tag">UNIDAD ${n}</span>
+      <span class="sb-spacer"></span>
+      <span class="count" id="count">답한 문제 0 / ${T}</span>
+      <button class="btn" id="gradeBtn">채점하기</button>
+    </div>
+    <div class="keys" aria-label="스페인어 특수문자 입력"><span>입력 도우미</span>${['á','é','í','ó','ú','ñ','ü','¿','¡'].map(k=>`<button type="button" data-k="${k}">${k}</button>`).join('')}</div>
+  </div></div>
+  <header class="col ch-head"><div class="no">UNIDAD ${n}</div><h1>${c.es}<small>${c.ko}</small></h1></header>
+  <main class="col">
+    <section class="theory">${c.theory}</section>
+    ${c.ex.map((e,ei)=>exHTML(n,e,ei)).join('')}
+    <section class="result" id="result" hidden aria-live="polite"></section>
+    <div class="pager">${n>1?`<a href="../Unidad${n-1}/">← Unidad ${n-1}</a>`:'<span></span>'}${n<30?`<a href="../Unidad${n+1}/">Unidad ${n+1} →</a>`:'<span></span>'}</div>
+  </main>`;
+  // restore state
+  c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{
+    const k=`${ei}-${ii}`, v=state[n][k]; const li=document.getElementById(`i-${k}`);
+    if(v!==undefined && v!==''){ if(it.t==='text') li.querySelector('input').value=v; else setPick(li,it,v); }
+    if(marks[n][k]) showMark(n,ei,ii);
+  }));
+  updateCount(n);
+  $('#gradeBtn').addEventListener('click',()=>grade(n));
+  document.querySelector('.keys').addEventListener('mousedown',e=>{ if(e.target.dataset.k) e.preventDefault(); });
+  document.querySelector('.keys').addEventListener('click',e=>{
+    const k=e.target.dataset.k; if(!k) return;
+    const inp = focusedInput && document.body.contains(focusedInput) ? focusedInput : null;
+    if(!inp) return;
+    const s=inp.selectionStart??inp.value.length, en=inp.selectionEnd??s;
+    inp.value=inp.value.slice(0,s)+k+inp.value.slice(en); inp.setSelectionRange(s+1,s+1); inp.focus();
+    inp.dispatchEvent(new Event('input',{bubbles:true}));
+  });
+  if(Object.keys(lastResult[n]||{}).length) renderResult(n,false);
+}
+const lastResult = {};
+
+function exHTML(n,e,ei){
+  return `<section class="ex" id="ex${ei}">
+    <div class="ex-head"><h2>${e.title}</h2><span class="ex-score" id="sc${ei}"></span></div>
+    <p class="instr">${e.instr}</p>
+    <ol class="items">${e.items.map((it,ii)=>{
+      const k=`${ei}-${ii}`; const [a,b]=it.q.split('___');
+      const body = it.t==='text'
+        ? `${a}<input type="text" id="in-${n}-${k}" data-k="${k}" autocomplete="off" autocapitalize="none" spellcheck="false" aria-label="${ii+1}번 답">${b||''}`
+        : `${a}<span class="blank" id="bl-${n}-${k}"></span>${b||''}<div class="opts" role="radiogroup" aria-label="${ii+1}번 선택지">${it.o.map(o=>`<button type="button" role="radio" aria-checked="false" data-k="${k}" data-v="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}</div>`;
+      return `<li class="item" id="i-${k}"><span class="n">${ii+1}</span><div class="q">${body}</div><div class="fb" id="fb-${k}"></div></li>`;
+    }).join('')}</ol></section>`;
+}
+
+function setPick(li,it,v){
+  li.querySelector('.blank').textContent=v;
+  li.querySelectorAll('.opts button').forEach(b=>b.setAttribute('aria-checked',b.dataset.v===v?'true':'false'));
+}
+function clearMark(n,k){
+  delete marks[n][k]; const li=document.getElementById('i-'+k); if(!li) return;
+  li.classList.remove('ok','bad','half'); document.getElementById('fb-'+k).innerHTML='';
+}
+function updateCount(n){
+  const c=CH[n-1]; let a=0; c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{ const v=state[n][`${ei}-${ii}`]; if(v!==undefined&&v!=='') a++; }));
+  const el=$('#count'); if(el) el.textContent=`답한 문제 ${a} / ${total(c)}`; return a;
+}
+
+document.addEventListener('focusin',e=>{ if(e.target.matches && e.target.matches('.q input')) focusedInput=e.target; });
+document.addEventListener('input',e=>{
+  const t=e.target; if(!t.matches||!t.matches('.q input')) return;
+  const n=curChapter(); const k=t.dataset.k; state[n][k]=t.value; clearMark(n,k); updateCount(n);
+});
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.opts button'); if(!b) return;
+  const n=curChapter(); const k=b.dataset.k; const [ei,ii]=k.split('-').map(Number); const it=CH[n-1].ex[ei].items[ii];
+  state[n][k]=b.dataset.v; setPick(document.getElementById('i-'+k),it,b.dataset.v); clearMark(n,k); updateCount(n);
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter' && e.target.matches && e.target.matches('.q input')){
+    const ins=[...document.querySelectorAll('.q input')]; const i=ins.indexOf(e.target); if(ins[i+1]) ins[i+1].focus();
+  }
+});
+const curChapter = () => SINGLE;
+
+/* ---------- grading ---------- */
+const strip = s => s.replace(/ñ/g,'\u0001').normalize('NFD').replace(/[̀-ͯ]/g,'');
+const norm = s => s.toLowerCase().trim().replace(/\s+/g,' ').replace(/[.!?]+$/,'');
+function judge(it,v){
+  if(v===undefined||v==='') return 'none';
+  if(it.t==='pick') return v===it.a?'ok':'bad';
+  const x=norm(v);
+  if(it.a.some(a=>norm(a)===x)) return 'ok';
+  if(it.a.some(a=>strip(norm(a))===strip(x))) return 'half';
+  return 'bad';
+}
+function showMark(n,ei,ii){
+  const k=`${ei}-${ii}`, it=CH[n-1].ex[ei].items[ii], m=marks[n][k], li=document.getElementById('i-'+k), fb=document.getElementById('fb-'+k);
+  li.classList.remove('ok','bad','half'); if(!m) return; li.classList.add(m);
+  const ans = it.t==='pick'?it.a:it.a[0]; const rule = CH[n-1].ex[ei].rule;
+  const why = it.why||rule;
+  const head = m==='ok'?'✔ 정답':m==='half'?`△ 악센트(´) 확인 · 정답 <b>${ans}</b> (0.5점)`:`✘ 오답 · 정답 <b>${ans}</b>`;
+  fb.innerHTML = head + (why?`<span class="why"><b>해설</b> ${why}</span>`:'');
+}
+function grade(n){
+  const c=CH[n-1]; const res={ex:[],score:0,total:0,blank:0};
+  c.ex.forEach((e,ei)=>{
+    let s=0;
+    e.items.forEach((it,ii)=>{
+      const k=`${ei}-${ii}`, j=judge(it,state[n][k]);
+      if(j==='none'){ marks[n][k]='bad'; res.blank++; } else marks[n][k]=j;
+      if(j==='ok') s+=1; else if(j==='half') s+=.5;
+      showMark(n,ei,ii);
+      if(j==='none'){ document.getElementById('fb-'+k).innerHTML='✘ 미응답 · 정답 <b>'+(it.t==='pick'?it.a:it.a[0])+'</b>'+`<span class="why"><b>해설</b> ${it.why||e.rule}</span>`; }
+    });
+    document.getElementById('sc'+ei).textContent=`${fmt(s)} / ${e.items.length}`;
+    res.ex.push({title:e.title,s,t:e.items.length}); res.score+=s; res.total+=e.items.length;
+  });
+  lastResult[n]=res;
+  const pr=progress(); const old=pr['ch'+n];
+  if(!old||res.score>=old.score){ pr['ch'+n]={score:res.score,total:res.total}; store.set('gdu-progress',pr); }
+  renderResult(n,true);
+}
+function renderResult(n,scroll){
+  const res=lastResult[n], pct=Math.round(res.score/res.total*100), name=(store.get('gdu-name')||'').trim();
+  const msg = pct>=90?['훌륭해요!','거의 완벽합니다. 다음 단원으로 넘어가도 좋아요.']:pct>=70?['잘했어요!','틀린 문제의 해설을 읽고 다시 도전해 보세요.']:pct>=50?['조금만 더!','문법 정리를 한 번 더 읽고 틀린 문제를 다시 풀어 보세요.']:['다시 도전해요','문법 정리를 천천히 읽고 예문을 소리 내어 따라 해 보세요.'];
+  const R=54, C=2*Math.PI*R;
+  const el=$('#result'); el.hidden=false;
+  el.innerHTML=`
+   <div class="r-top">
+    <div class="ring"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="bg" cx="66" cy="66" r="${R}"/><circle class="fg" cx="66" cy="66" r="${R}" stroke-dasharray="${C*pct/100} ${C}"/></svg><b>${pct}%</b></div>
+    <div class="r-txt"><div class="eyebrow">${name?name+' · ':''}UNIDAD ${n} 결과</div><h2>${fmt(res.score)} / ${res.total}점 · ${msg[0]}</h2><p>${msg[1]}</p>${res.blank?`<p>풀지 않은 문제가 ${res.blank}개 있어요. 오답으로 처리되었습니다.</p>`:''}</div>
+   </div>
+   <div class="brk">${res.ex.map(e=>`<div><span>${e.title}</span><span class="bar"><i style="width:${e.s/e.t*100}%"></i></span><span>${fmt(e.s)}/${e.t}</span></div>`).join('')}</div>
+   <div class="r-act"><button class="btn" id="retryWrong">틀린 문제만 다시 풀기</button><button class="btn ghost" id="retryAll">처음부터 다시 풀기</button></div>`;
+  $('#retryWrong').onclick=()=>retry(n,false); $('#retryAll').onclick=()=>retry(n,true);
+  if(scroll) el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+function retry(n,all){
+  const c=CH[n-1];
+  c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{
+    const k=`${ei}-${ii}`, m=marks[n][k];
+    if(all || m!=='ok'){
+      delete state[n][k]; clearMark(n,k); const li=document.getElementById('i-'+k);
+      if(it.t==='text') li.querySelector('input').value=''; else { li.querySelector('.blank').textContent=''; li.querySelectorAll('.opts button').forEach(b=>b.setAttribute('aria-checked','false')); }
+    }
+  }));
+  c.ex.forEach((e,ei)=>{ $('#sc'+ei).textContent=''; });
+  delete lastResult[n]; $('#result').hidden=true; updateCount(n);
+  const first=document.querySelector('li.item:not(.ok)'); if(first) first.scrollIntoView({behavior:'smooth',block:'center'}); else window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ---------- router ---------- */
+function route(){
+  chapter(SINGLE);
+  window.scrollTo(0,0);
+}
+route();
+</script>
