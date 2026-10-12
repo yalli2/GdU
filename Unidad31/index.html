@@ -237,7 +237,7 @@ function chapter(n){
     <section class="theory">${fmtTheory(c.theory)}</section>
     ${c.ex.map((e,ei)=>exHTML(n,e,ei)).join('')}
     <section class="result" id="result" hidden aria-live="polite"></section>
-    <div class="pager">${n>1?`<a href="../Unidad${n-1}/">← Unidad ${n-1}</a>`:'<span></span>'}${n<30?`<a href="../Unidad${n+1}/">Unidad ${n+1} →</a>`:'<span></span>'}</div>
+    <div class="pager">${n>1?`<a href="../Unidad${n-1}/">← Unidad ${n-1}</a>`:'<span></span>'}${n<60?`<a href="../Unidad${n+1}/">Unidad ${n+1} →</a>`:'<span></span>'}</div>
   </main>`;
   // restore state
   c.ex.forEach((e,ei)=>e.items.forEach((it,ii)=>{
