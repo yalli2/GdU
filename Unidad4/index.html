@@ -358,7 +358,7 @@ function grade(n){
   });
   lastResult[n]=res;
   const pr=progress(); const old=pr['ch'+n];
-  if(!old||res.score>=old.score){ pr['ch'+n]={score:res.score,total:res.total}; store.set('gdu-progress',pr); }
+  if(!old||res.score>=old.score){ pr['ch'+n]={score:res.score,total:res.total}; store.set('gdu-progress',pr); } try{window.gduLog&&gduLog(n,res)}catch(e){}
   renderResult(n,true);
 }
 function renderResult(n,scroll){
@@ -398,5 +398,5 @@ function route(){
 route();
 </script>
 
-<script src="../gt.js"></script></body>
+<script src="../gt.js"></script><script src="../records.js"></script></body>
 </html>
