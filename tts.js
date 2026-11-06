@@ -9,6 +9,8 @@
   function score(v){
     var l=(v.lang||'').replace('_','-').toLowerCase(), n=(v.name||'').toLowerCase();
     if(l.indexOf('es')!==0)return -1;
+    /* 크롬의 'Google' 원격 음성은 속도(rate)를 무시하므로 제외 → 속도가 먹는 음성만 사용 */
+    if(v.localService===false&&!/microsoft/.test(n))return -1;
     var s=1;
     if(l==='es-es')s+=6; else if(l==='es-mx'||l==='es-us'||l==='es-ar'||l==='es-co'||l==='es-cl')s+=4;
     if(/google|natural|neural|premium|enhanced|online|mónica|monica|paulina|helena|elvira|jorge|pablo|alvaro|álvaro|laura|sabina|diego/.test(n))s+=3;
