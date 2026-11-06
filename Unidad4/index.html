@@ -70,7 +70,7 @@ footer.site{padding-block:0 48px;color:var(--muted);font-size:.84rem}
 /* ===== chapter ===== */
 .studybar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
 .sb-row{display:flex;align-items:center;gap:10px;padding-block:8px;flex-wrap:wrap}
-.home{text-decoration:none;font-weight:700;font-size:.92rem;padding:6px 10px;border-radius:8px;background:var(--chip)}
+.home{text-decoration:none;font-weight:700;font-size:.92rem;padding:6px 10px;border-radius:8px;background:var(--chip)}/*HOMEBTN*/ .home{background:var(--accent);color:var(--accent-ink)!important;white-space:nowrap}
 .tabs{display:flex;gap:6px}
 .tabs a{display:grid;place-items:center;width:34px;height:34px;border-radius:9px;text-decoration:none;font-weight:700;font-family:var(--f-display);background:var(--chip)}
 .tabs a[aria-current="page"]{background:var(--accent);color:var(--accent-ink)}
@@ -230,7 +230,7 @@ function chapter(n){
   $('#app').innerHTML = `
   <div class="studybar"><div class="wrap">
     <div class="sb-row">
-      <span class="home">UNIDAD ${n}</span>
+      <a class="home" href="../">🏠 메인으로</a><span class="unit-tag">UNIDAD ${n}</span>
       <span class="sb-spacer"></span>
       <span class="count" id="count">답한 문제 0 / ${T}</span>
       <button class="btn" id="gradeBtn">채점하기</button>
