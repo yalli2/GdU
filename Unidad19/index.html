@@ -178,7 +178,7 @@ const total = ch => ch.ex.reduce((n,e)=>n+e.items.length,0);
 const fmt = n => (Math.round(n*10)/10).toString();
 
 function speak(t){
-  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='es-ES'; u.rate=.9; speechSynthesis.speak(u);}catch(e){}
+  if(window.gduSay){window.gduSay(t);return;} try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='es-ES'; u.rate=.9; speechSynthesis.speak(u);}catch(e){}
 }
 document.addEventListener('click',e=>{ const s=e.target.closest('.es'); if(s) speak(s.dataset.say); });
 document.addEventListener('keydown',e=>{ if((e.key==='Enter'||e.key===' ') && e.target.classList && e.target.classList.contains('es')){ e.preventDefault(); speak(e.target.dataset.say);} });
