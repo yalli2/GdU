@@ -6,6 +6,9 @@
   function load(){try{voices=speechSynthesis.getVoices()||[]}catch(e){voices=[]}}
   load();
   try{speechSynthesis.addEventListener('voiceschanged',load)}catch(e){}
+  var MALE=/jorge|diego|juan|pablo|álvaro|alvaro|enrique|miguel|carlos|raúl|raul|alonso|gonzalo|tomás|tomas|pedro|andrés|andres|antonio|luis|male|hombre|masculin/;
+  var FEMALE=/mónica|monica|paulina|helena|elvira|laura|sabina|marisol|esperanza|angélica|angelica|dalia|lupe|paloma|salome|soledad|ximena|elena|lucía|lucia|isabela|valentina|catalina|female|mujer|femenin/;
+  function gender(v){var n=(v.name||'').toLowerCase();if(MALE.test(n)&&!FEMALE.test(n))return 'm';if(FEMALE.test(n))return 'f';return '?'}
   function score(v){
     var l=(v.lang||'').replace('_','-').toLowerCase(), n=(v.name||'').toLowerCase();
     if(l.indexOf('es')!==0)return -1;
@@ -15,6 +18,7 @@
     if(l==='es-es')s+=6; else if(l==='es-mx'||l==='es-us'||l==='es-ar'||l==='es-co'||l==='es-cl')s+=4;
     if(/google|natural|neural|premium|enhanced|online|mónica|monica|paulina|helena|elvira|jorge|pablo|alvaro|álvaro|laura|sabina|diego/.test(n))s+=3;
     if(v.localService===false&&/google|online|natural/.test(n))s+=1;
+    var g=gender(v); if(g==='m')s+=20; else if(g==='f')s-=0.5;
     return s;
   }
   function best(){var b=null,bs=-1;voices.forEach(function(v){var s=score(v);if(s>bs){bs=s;b=v}});return bs>=0?b:null}
@@ -34,7 +38,7 @@
     if(!voices.length)load();
     var v=best();
     if(v){
-      try{var u=new SpeechSynthesisUtterance(t);u.voice=v;u.lang=v.lang;u.rate=getRate();speechSynthesis.speak(u);return}catch(e){}
+      try{var u=new SpeechSynthesisUtterance(t);u.voice=v;u.lang=v.lang;u.rate=getRate();var g=gender(v);u.pitch=g==='m'?1:g==='?'?0.8:0.6;speechSynthesis.speak(u);return}catch(e){}
     }
     online(t);
   };
