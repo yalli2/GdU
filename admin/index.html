@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>접근 권한 관리 · GdU</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="../access.js" data-lib="1"></script>
+<style>
+:root{--bg:#F3F5F9;--sf:#fff;--ink:#172033;--mu:#5B6679;--ln:#DDE2EC;--ac:#B8283F;--acs:#FBE4E8;--ok:#12805C;--oks:#DDF4EA;--bad:#C0302B;--bads:#FDE3E1;--gold:#8A5600;--golds:#FFF0CC;--chip:#E8EDF6;
+--fd:"Bricolage Grotesque","Noto Sans KR",system-ui,sans-serif;--fb:"Noto Sans KR",system-ui,-apple-system,"Segoe UI",sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--fb)}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 18px 120px}
+header.top{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.kick{font:700 12px var(--fb);letter-spacing:.08em;text-transform:uppercase;color:var(--ac)}
+h1{font:800 clamp(1.5rem,3vw,2.1rem)/1.15 var(--fd);margin:2px 0 0}
+h2{font:700 1.05rem/1.3 var(--fb);margin:0 0 4px}
+.sub{color:var(--mu);font-size:13px;margin:0 0 14px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:18px;margin-bottom:16px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input[type=text],input[type=password],textarea,select{border:1.5px solid var(--ln);border-radius:10px;padding:9px 12px;font:15px var(--fb);color:var(--ink);background:#F8F9FC;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--ac);background:#fff}
+textarea{width:100%;min-height:70px;resize:vertical}
+button{border:1px solid var(--ln);background:var(--chip);color:var(--ink);border-radius:10px;padding:8px 14px;font:600 14px var(--fb);cursor:pointer}
+button:hover{border-color:#b9c2d3}
+button.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+button.ghost{background:transparent}
+button.sm{padding:4px 9px;font-size:12px;border-radius:8px}
+button.danger{color:var(--bad)}
+button:disabled{opacity:.55;cursor:not-allowed}
+.login{max-width:420px;margin:60px auto}
+.login input{width:100%;margin:6px 0 10px}
+.err{color:var(--bad);font-weight:600;font-size:13px;min-height:18px}
+.muted{color:var(--mu);font-size:13px}
+.hide{display:none!important}
+/* month bar */
+.mbar{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center}
+.mnav{display:flex;align-items:center;gap:8px}
+.mnav b{font:800 1.5rem var(--fd);min-width:150px;text-align:center}
+.now{display:inline-block;font-size:11px;font-weight:700;background:var(--acs);color:#8f1d31;border-radius:99px;padding:1px 8px;vertical-align:middle}
+.seg{display:inline-flex;border:1px solid var(--ln);border-radius:12px;overflow:hidden;background:var(--chip)}
+.seg button{border:0;border-radius:0;background:transparent;padding:9px 14px}
+.seg button.on[data-m=open]{background:var(--ok);color:#fff}
+.seg button.on[data-m=code]{background:#2A4E9B;color:#fff}
+.seg button.on[data-m=closed]{background:var(--bad);color:#fff}
+.seg button.on[data-m=inherit]{background:#fff}
+.mdesc{font-size:13px;color:var(--mu);margin-top:6px}
+.stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.stats span{background:var(--chip);border-radius:99px;padding:3px 11px;font-size:12px;font-weight:600}
+/* grid */
+.tw{overflow:auto;border:1px solid var(--ln);border-radius:14px}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{padding:7px 8px;border-bottom:1px solid var(--ln);text-align:center;white-space:nowrap;background:var(--sf)}
+th{position:sticky;top:0;z-index:1;font-size:12px;color:var(--mu);background:#F8F9FC}
+td.nm,th.nm{text-align:left;position:sticky;left:0;z-index:2;min-width:120px}
+th.nm{z-index:3}
+td.nm b{font-size:14px}
+th.mh{cursor:pointer;min-width:44px}
+th.mh .md{display:block;font-size:10px;font-weight:700;margin-top:2px}
+th.mh .md.open{color:var(--ok)}th.mh .md.code{color:#2A4E9B}th.mh .md.closed{color:var(--bad)}
+th.sel,td.sel{background:#FFF7E0}
+th.cur{box-shadow:inset 0 -3px 0 var(--ac)}
+.ck{width:30px;height:28px;border-radius:8px;border:1.5px solid var(--ln);background:#fff;cursor:pointer;padding:0;font-size:14px;line-height:1}
+.ck.on{background:var(--ok);border-color:var(--ok);color:#fff}
+.code{font:700 14px ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;background:var(--chip);border-radius:8px;padding:3px 8px;cursor:pointer}
+.code.dim{opacity:.45;letter-spacing:0;font-weight:500}
+.site{display:inline-flex;align-items:center;gap:3px;font-size:12px;margin-right:6px;cursor:pointer}
+tr.off td{opacity:.5}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+/* save bar */
+.savebar{position:fixed;left:0;right:0;bottom:0;z-index:20;background:rgba(23,32,51,.96);color:#fff;padding:12px 18px;display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;transform:translateY(110%);transition:transform .2s}
+.savebar.on{transform:none}
+.savebar button{border-color:transparent}
+.savebar .st{font-size:13px;opacity:.9}
+.toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:50;background:var(--ink);color:#fff;border-radius:12px;padding:10px 16px;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.25);display:none;max-width:90vw}
+.toast.on{display:block}
+details summary{cursor:pointer;font-weight:700}
+details .in{margin-top:12px}
+ol.help{padding-left:20px;margin:6px 0;font-size:13px;color:var(--mu)}
+ol.help li{margin:3px 0}
+.log{font:12px ui-monospace,Menlo,monospace;background:#F8F9FC;border-radius:10px;padding:8px 10px;white-space:pre-wrap;margin-top:8px}
+@media (max-width:640px){.mbar{grid-template-columns:1fr}.mnav b{min-width:120px;font-size:1.25rem}}
+@media print{.savebar,.no-print{display:none!important}body{background:#fff}.card{border:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div><div class="kick">Gramática de uso · 다인에듀</div><h1>접근 권한 관리</h1></div>
+    <div class="row no-print hide" id="topActs"><span class="muted" id="lastSaved"></span><button class="ghost" id="logoutBtn">잠그기</button></div>
+  </header>
+
+  <!-- 로그인 / 최초 설정 -->
+  <section class="card login hide" id="loginCard">
+    <h2 id="loginTitle">관리자 로그인</h2>
+    <p class="sub" id="loginSub">관리자 비밀번호를 입력하세요.</p>
+    <form id="loginForm">
+      <input type="password" id="pw1" placeholder="비밀번호" autocomplete="current-password" required>
+      <input type="password" id="pw2" class="hide" placeholder="비밀번호 확인" autocomplete="new-password">
+      <button class="pri" type="submit" style="width:100%">확인</button>
+      <div class="err" id="loginErr"></div>
+    </form>
+  </section>
+
+  <div id="main" class="hide">
+    <!-- 월 선택 + 모드 -->
+    <section class="card">
+      <div class="mbar">
+        <div class="mnav"><button id="mPrev" aria-label="이전 달">◀</button><b id="mLabel"></b><button id="mNext" aria-label="다음 달">▶</button></div>
+        <div>
+          <div class="seg" id="modeSeg">
+            <button data-m="open">🔓 전체 공개</button><button data-m="code">🔑 등록 학생만</button><button data-m="closed">⛔ 전체 잠금</button><button data-m="inherit" title="이 달을 따로 정하지 않고 기본값을 따릅니다">기본값 따름</button>
+          </div>
+          <div class="mdesc" id="mDesc"></div>
+        </div>
+      </div>
+      <div class="stats" id="mStats"></div>
+    </section>
+
+    <!-- 학생 × 월 -->
+    <section class="card">
+      <div class="row" style="justify-content:space-between">
+        <div><h2>학생별 월 이용 권한</h2><p class="sub" style="margin:0">칸을 눌러 그 달의 이용을 허용/해제합니다. 노란 열이 선택한 달이에요. 월 머리글을 누르면 그 달로 이동합니다.</p></div>
+        <div class="row no-print"><label class="muted">연도 <select id="yearSel"></select></label></div>
+      </div>
+      <div class="tools no-print">
+        <button id="allOn">선택한 달 전원 허용</button>
+        <button id="allOff">선택한 달 전원 해제</button>
+        <button id="copyPrev">지난달 명단 그대로 복사</button>
+        <button id="copyCodes">코드 목록 복사</button>
+        <button id="printBtn">코드표 인쇄</button>
+      </div>
+      <div class="tw"><table id="grid"></table></div>
+      <p class="muted" id="emptyMsg" style="text-align:center;padding:16px 0">아직 등록된 학생이 없습니다. 아래에서 추가하세요.</p>
+    </section>
+
+    <!-- 학생 추가 -->
+    <section class="card no-print">
+      <h2>학생 추가</h2>
+      <p class="sub">이름을 한 줄에 한 명씩(또는 쉼표로) 입력하면 학생마다 접근 코드가 자동으로 만들어지고, 선택한 달 이용이 허용됩니다.</p>
+      <textarea id="newNames" placeholder="김민수&#10;이서연&#10;Juan Pérez"></textarea>
+      <div class="row" style="margin-top:10px">
+        <span class="muted">이용 사이트:</span>
+        <label class="site"><input type="checkbox" class="newSite" value="gdu" checked> A1–A2 (GdU)</label>
+        <label class="site"><input type="checkbox" class="newSite" value="gdu_a1_b2" checked> A1–B2 (GdU_A1_B2)</label>
+        <button class="pri" id="addBtn">추가</button>
+      </div>
+    </section>
+
+    <!-- 설정 -->
+    <section class="card no-print">
+      <details id="setDet">
+        <summary>설정 · GitHub 저장 연결 · 비밀번호</summary>
+        <div class="in">
+          <h2>설정 안 한 달의 기본값</h2>
+          <p class="sub">위에서 '기본값 따름'으로 둔 달에 적용됩니다.</p>
+          <div class="seg" id="defSeg"><button data-m="open">🔓 전체 공개</button><button data-m="code">🔑 등록 학생만</button><button data-m="closed">⛔ 전체 잠금</button></div>
+
+          <h2 style="margin-top:22px">GitHub 저장 연결</h2>
+          <p class="sub">저장 버튼을 누르면 두 사이트(GdU, GdU_A1_B2)의 <code>access.json</code>이 동시에 바뀝니다. 이 기기에서 한 번만 토큰을 넣어 두면 됩니다.</p>
+          <ol class="help">
+            <li>github.com → 오른쪽 위 프로필 → Settings → Developer settings → Personal access tokens → <b>Fine-grained tokens</b> → Generate new token</li>
+            <li>Repository access: <b>Only select repositories</b> → GdU, GdU_A1_B2 선택</li>
+            <li>Permissions → Repository permissions → <b>Contents: Read and write</b> → Generate → 토큰을 아래에 붙여넣기</li>
+          </ol>
+          <div class="row"><input type="password" id="tok" placeholder="github_pat_..." style="flex:1;min-width:240px" autocomplete="off"><button id="tokSave">이 기기에 저장</button><button id="tokTest">연결 확인</button><button class="ghost danger" id="tokDel">토큰 지우기</button></div>
+          <div class="muted" id="tokMsg" style="margin-top:6px"></div>
+
+          <h2 style="margin-top:22px">관리자 비밀번호 변경</h2>
+          <p class="sub">관리자 비밀번호는 잠긴 사이트에 들어갈 때도 쓰입니다. 바꾼 뒤 저장해야 적용됩니다.</p>
+          <div class="row"><input type="password" id="np1" placeholder="새 비밀번호" autocomplete="new-password"><input type="password" id="np2" placeholder="새 비밀번호 확인" autocomplete="new-password"><button id="pwChange">변경</button></div>
+          <div class="err" id="pwErr"></div>
+        </div>
+      </details>
+    </section>
+  </div>
+</div>
+
+<div class="savebar" id="saveBar">
+  <span class="st" id="saveSt">저장하지 않은 변경사항이 있습니다</span>
+  <button class="pri" id="saveBtn">💾 GitHub에 저장 (두 사이트)</button>
+  <button id="dlBtn">access.json 내려받기</button>
+  <button class="ghost" id="undoBtn" style="color:#fff">변경 취소</button>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+'use strict';
+const A = window.GduAccess;
+const OWNER = 'yalli2';
+const SITES = [
+  {id:'gdu', label:'A1–A2', repo:'GdU'},
+  {id:'gdu_a1_b2', label:'A1–B2', repo:'GdU_A1_B2'}
+];
+const TOKKEY = 'gdu-admin-gh-token';
+const MODE_TXT = {
+  open:'누구나 코드 없이 이용할 수 있습니다.',
+  code:'이 달에 허용된 학생만 자기 코드로 들어갈 수 있습니다. (관리자 비밀번호는 항상 가능)',
+  closed:'학생은 아무도 들어갈 수 없습니다. 관리자 비밀번호로만 열립니다.'
+};
+const MODE_SHORT = {open:'공개', code:'코드', closed:'잠금'};
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+let P = null, saved = '', key = null, codes = {}, curMonth = A.seoulMonth(), selMonth = curMonth, showCodes = false;
+
+function toast(t, ms){ const e=$('#toast'); e.textContent=t; e.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>e.classList.remove('on'), ms||2600); }
+function rand(n){ const a=new Uint8Array(n); crypto.getRandomValues(a); return a; }
+function hex(a){ return Array.from(a, b=>b.toString(16).padStart(2,'0')).join(''); }
+function b64(u8){ let s=''; u8.forEach(b=>s+=String.fromCharCode(b)); return btoa(s); }
+function unb64(s){ return Uint8Array.from(atob(s), c=>c.charCodeAt(0)); }
+function b64utf8(str){ return b64(new TextEncoder().encode(str)); }
+const ALPH = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+function newCode(){ const r=rand(6); let c=''; r.forEach(b=>c+=ALPH[b%32]); return c; }
+function newId(){ return hex(rand(4)); }
+function addMonths(m, d){ let [y,mo]=m.split('-').map(Number); mo+=d; while(mo>12){mo-=12;y++} while(mo<1){mo+=12;y--} return y+'-'+String(mo).padStart(2,'0'); }
+function mLabel(m){ const [y,mo]=m.split('-'); return y+'년 '+(+mo)+'월'; }
+function cloneP(){ return JSON.parse(JSON.stringify(P)); }
+function serialize(){ return JSON.stringify(P, null, 2) + '\n'; }
+
+async function deriveKey(pw, saltHex){
+  const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt:new TextEncoder().encode(saltHex), iterations:150000, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+}
+async function enc(k, text){ const iv=rand(12); const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM', iv}, k, new TextEncoder().encode(text))); const o=new Uint8Array(12+ct.length); o.set(iv); o.set(ct,12); return b64(o); }
+async function dec(k, s){ const u=unb64(s); const pt=await crypto.subtle.decrypt({name:'AES-GCM', iv:u.slice(0,12)}, k, u.slice(12)); return new TextDecoder().decode(pt); }
+
+/* ---------- 불러오기 & 로그인 ---------- */
+async function load(){
+  try { const r = await fetch('../access.json?t='+Date.now(), {cache:'no-store'}); if (!r.ok) throw 0; P = await r.json(); }
+  catch(e){ P = null; }
+  if (!P || typeof P !== 'object') P = {};
+  P.v = 1; P.months = P.months || {}; P.students = P.students || []; P.defaultMode = P.defaultMode || 'open';
+  if (!P.salt) P.salt = hex(rand(16));
+  P.admin = P.admin || {};
+  const setup = !P.admin.hash;
+  $('#loginCard').classList.remove('hide');
+  if (setup){
+    $('#loginTitle').textContent = '처음 설정: 관리자 비밀번호 만들기';
+    $('#loginSub').innerHTML = '이 비밀번호로 관리 화면과 잠긴 사이트에 들어갑니다. 8자 이상으로 정해 주세요.<br>설정 후 <b>GitHub에 저장</b>해야 실제로 적용됩니다.';
+    $('#pw2').classList.remove('hide'); $('#pw1').autocomplete='new-password';
+  }
+  $('#pw1').focus();
+  $('#loginForm').onsubmit = async ev => {
+    ev.preventDefault();
+    const pw = $('#pw1').value, err = $('#loginErr'); err.textContent = '';
+    const btn = ev.target.querySelector('button'); btn.disabled = true;
+    try {
+      if (setup){
+        if (pw.length < 8) throw '8자 이상으로 정해 주세요.';
+        if (pw !== $('#pw2').value) throw '두 비밀번호가 다릅니다.';
+        P.admin = {hash:A.adminHash(P.salt, pw), kdf:hex(rand(16))};
+        key = await deriveKey(pw, P.admin.kdf);
+        saved = '';   // 아직 저장 안 됨
+      } else {
+        await new Promise(r=>setTimeout(r,20));
+        if (A.adminHash(P.salt, pw) !== P.admin.hash) throw '비밀번호가 올바르지 않습니다.';
+        key = await deriveKey(pw, P.admin.kdf);
+        for (const s of P.students){ try { codes[s.id] = s.enc ? await dec(key, s.enc) : ''; } catch(e){ codes[s.id]=''; } }
+        saved = serialize();
+      }
+      $('#loginCard').classList.add('hide'); $('#main').classList.remove('hide'); $('#topActs').classList.remove('hide');
+      $('#lastSaved').textContent = P.updated ? '마지막 저장: ' + new Date(P.updated).toLocaleString('ko-KR') : '';
+      $('#tok').value = localStorage.getItem(TOKKEY) || '';
+      render();
+    } catch(e){ err.textContent = typeof e === 'string' ? e : '오류: ' + (e.message || e); }
+    btn.disabled = false;
+  };
+}
+
+/* ---------- 화면 ---------- */
+function modeOf(m){ return P.months[m] || null; }
+function effMode(m){ return P.months[m] || P.defaultMode; }
+
+function render(){
+  // 월 바
+  $('#mLabel').innerHTML = esc(mLabel(selMonth)) + (selMonth===curMonth ? ' <span class="now">이번 달</span>' : '');
+  const own = modeOf(selMonth), eff = effMode(selMonth);
+  $('#modeSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', own ? b.dataset.m===own : b.dataset.m==='inherit'));
+  $('#mDesc').textContent = (own ? '' : '기본값(' + MODE_SHORT[P.defaultMode] + ') 적용 중 · ') + MODE_TXT[eff];
+  const act = P.students.filter(s=>!s.disabled), allowed = act.filter(s=>(s.months||[]).includes(selMonth));
+  $('#mStats').innerHTML = `<span>등록 학생 ${P.students.length}명</span><span>이 달 허용 ${allowed.length}명</span>` +
+    SITES.map(si=>`<span>${si.label}: ${allowed.filter(s=>!s.sites||!s.sites.length||s.sites.includes(si.id)).length}명</span>`).join('') +
+    (eff!=='code' ? `<span style="background:var(--golds);color:var(--gold)">※ '${MODE_SHORT[eff]}' 상태라 학생 체크는 '등록 학생만'일 때만 적용됩니다</span>` : '');
+  $('#defSeg').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.m===P.defaultMode));
+
+  // 연도 선택
+  const y = +selMonth.slice(0,4), ys = $('#yearSel'); ys.innerHTML='';
+  for (let i=y-2;i<=y+2;i++) ys.add(new Option(i+'년', i, false, i===y));
+
+  // 표
+  const months = Array.from({length:12}, (_,i)=> y+'-'+String(i+1).padStart(2,'0'));
+  let h = '<thead><tr><th class="nm">학생</th><th>접근 코드 <button class="sm ghost" id="tgCodes">'+(showCodes?'숨기기':'보기')+'</button></th><th>사이트</th>';
+  months.forEach(m=>{ const md=effMode(m); h+=`<th class="mh${m===selMonth?' sel':''}${m===curMonth?' cur':''}" data-goto="${m}">${+m.slice(5)}월<span class="md ${md}">${MODE_SHORT[md]}${P.months[m]?'':'*'}</span></th>`; });
+  h += '<th>관리</th></tr></thead><tbody>';
+  P.students.forEach(s=>{
+    const c = codes[s.id];
+    h += `<tr class="${s.disabled?'off':''}" data-id="${s.id}"><td class="nm"><b>${esc(s.name)}</b></td>`;
+    h += `<td>${c ? `<span class="code" data-copy="${c}" title="눌러서 복사">${showCodes?c:'••••••'}</span>` : '<span class="code dim">재발급 필요</span>'}</td><td>`;
+    SITES.forEach(si=>{ const on=!s.sites||!s.sites.length||s.sites.includes(si.id); h+=`<label class="site"><input type="checkbox" data-site="${si.id}" ${on?'checked':''}>${si.label}</label>`; });
+    h += '</td>';
+    months.forEach(m=>{ const on=(s.months||[]).includes(m); h+=`<td class="${m===selMonth?'sel':''}"><button class="ck${on?' on':''}" data-m="${m}" aria-label="${esc(s.name)} ${mLabel(m)} ${on?'허용됨':'해제됨'}">${on?'✓':''}</button></td>`; });
+    h += `<td><button class="sm" data-act="re">코드 재발급</button> <button class="sm" data-act="dis">${s.disabled?'다시 사용':'일시 정지'}</button> <button class="sm danger" data-act="del">삭제</button></td></tr>`;
+  });
+  h += '</tbody>';
+  $('#grid').innerHTML = h;
+  $('#emptyMsg').classList.toggle('hide', P.students.length>0);
+  dirtyCheck();
+}
+
+function dirtyCheck(){
+  const d = serialize() !== saved;
+  $('#saveBar').classList.toggle('on', d);
+  return d;
+}
+function changed(){ render(); }
+
+/* ---------- 이벤트 ---------- */
+$('#mPrev').onclick = ()=>{ selMonth = addMonths(selMonth,-1); render(); };
+$('#mNext').onclick = ()=>{ selMonth = addMonths(selMonth, 1); render(); };
+$('#yearSel').onchange = e=>{ selMonth = e.target.value + selMonth.slice(4); render(); };
+$('#modeSeg').onclick = e=>{ const b=e.target.closest('button'); if(!b) return; if (b.dataset.m==='inherit') delete P.months[selMonth]; else P.months[selMonth]=b.dataset.m; changed(); };
+$('#defSeg').onclick = e=>{ const b=e.target.closest('button'); if(!b) return; P.defaultMode=b.dataset.m; changed(); };
+
+$('#grid').addEventListener('click', async e=>{
+  const t = e.target;
+  if (t.id==='tgCodes'){ showCodes=!showCodes; render(); return; }
+  const g = t.closest('[data-goto]'); if (g){ selMonth=g.dataset.goto; render(); return; }
+  const cp = t.closest('[data-copy]'); if (cp){ try{ await navigator.clipboard.writeText(cp.dataset.copy); toast('코드를 복사했습니다: '+cp.dataset.copy); }catch(_){ toast(cp.dataset.copy, 5000); } return; }
+  const tr = t.closest('tr[data-id]'); if (!tr) return;
+  const s = P.students.find(x=>x.id===tr.dataset.id); if (!s) return;
+  if (t.classList.contains('ck')){
+    const m=t.dataset.m; s.months=s.months||[];
+    const i=s.months.indexOf(m); if(i>=0) s.months.splice(i,1); else { s.months.push(m); s.months.sort(); }
+    changed(); return;
+  }
+  const act = t.dataset.act;
+  if (act==='re'){
+    if (!confirm(s.name+' 학생의 코드를 새로 만들까요? 이전 코드는 저장 후 더 이상 쓸 수 없습니다.')) return;
+    const c=newCode(); s.hash=A.codeHash(P.salt,c); s.enc=await enc(key,c); codes[s.id]=c; showCodes=true; changed(); toast(s.name+' 새 코드: '+c, 5000);
+  } else if (act==='dis'){ s.disabled=!s.disabled; if(!s.disabled) delete s.disabled; changed(); }
+  else if (act==='del'){ if (confirm(s.name+' 학생을 삭제할까요?')){ P.students=P.students.filter(x=>x!==s); delete codes[s.id]; changed(); } }
+});
+$('#grid').addEventListener('change', e=>{
+  const t=e.target; if(!t.dataset.site) return;
+  const tr=t.closest('tr[data-id]'); const s=P.students.find(x=>x.id===tr.dataset.id);
+  const cur = (!s.sites||!s.sites.length) ? SITES.map(x=>x.id) : s.sites.slice();
+  const i=cur.indexOf(t.dataset.site); if (t.checked && i<0) cur.push(t.dataset.site); if(!t.checked && i>=0) cur.splice(i,1);
+  if (!cur.length){ t.checked=true; toast('사이트는 하나 이상 선택해야 합니다. 이용을 막으려면 일시 정지를 쓰세요.'); return; }
+  s.sites = cur.length===SITES.length ? SITES.map(x=>x.id) : cur; changed();
+});
+
+$('#addBtn').onclick = async ()=>{
+  const names = $('#newNames').value.split(/[\n,]+/).map(x=>x.trim()).filter(Boolean);
+  if (!names.length){ toast('이름을 입력하세요.'); return; }
+  const sites = Array.from(document.querySelectorAll('.newSite:checked')).map(x=>x.value);
+  if (!sites.length){ toast('사이트를 하나 이상 고르세요.'); return; }
+  const used = new Set(P.students.map(s=>s.hash));
+  for (const n of names){
+    let c, h; do { c=newCode(); h=A.codeHash(P.salt,c); } while(used.has(h)); used.add(h);
+    const id=newId();
+    P.students.push({id, name:n, hash:h, enc:await enc(key,c), sites, months:[selMonth]});
+    codes[id]=c;
+  }
+  $('#newNames').value=''; showCodes=true;
+  if (effMode(selMonth)!=='code') toast(names.length+'명 추가했습니다. 학생 코드가 실제로 쓰이려면 이 달을 \'등록 학생만\'으로 바꾸세요.', 5000);
+  else toast(names.length+'명 추가했습니다. 저장을 눌러 적용하세요.');
+  changed();
+};
+$('#allOn').onclick = ()=>{ P.students.forEach(s=>{ s.months=s.months||[]; if(!s.months.includes(selMonth)){ s.months.push(selMonth); s.months.sort(); } }); changed(); };
+$('#allOff').onclick = ()=>{ P.students.forEach(s=>{ s.months=(s.months||[]).filter(m=>m!==selMonth); }); changed(); };
+$('#copyPrev').onclick = ()=>{
+  const pm=addMonths(selMonth,-1); let n=0;
+  P.students.forEach(s=>{ s.months=s.months||[]; const had=s.months.includes(pm), has=s.months.includes(selMonth);
+    if (had && !has){ s.months.push(selMonth); s.months.sort(); n++; } if (!had && has){ s.months=s.months.filter(m=>m!==selMonth); n++; } });
+  if (P.months[pm] && !P.months[selMonth]) P.months[selMonth]=P.months[pm];
+  toast(mLabel(pm)+' 명단을 '+mLabel(selMonth)+'에 복사했습니다.'); changed();
+};
+function codeList(){
+  return P.students.filter(s=>!s.disabled && (s.months||[]).includes(selMonth))
+    .map(s=>[s.name, codes[s.id]||'(재발급 필요)', (!s.sites||s.sites.length===SITES.length)?'A1–A2, A1–B2':s.sites.map(id=>SITES.find(x=>x.id===id).label).join(', ')]);
+}
+$('#copyCodes').onclick = async ()=>{
+  const rows=codeList(); if(!rows.length){ toast(mLabel(selMonth)+'에 허용된 학생이 없습니다.'); return; }
+  const txt=['이름\t접근 코드\t사이트'].concat(rows.map(r=>r.join('\t'))).join('\n');
+  try{ await navigator.clipboard.writeText(txt); toast(rows.length+'명 코드 목록을 복사했습니다 (엑셀에 붙여넣기 가능).'); }catch(_){ prompt('복사하세요', txt); }
+};
+$('#printBtn').onclick = ()=>{
+  const rows=codeList(); if(!rows.length){ toast(mLabel(selMonth)+'에 허용된 학생이 없습니다.'); return; }
+  const w=window.open('','_blank'); if(!w){ toast('팝업이 막혔습니다.'); return; }
+  w.document.write(`<!doctype html><meta charset="utf-8"><title>${mLabel(selMonth)} 접근 코드</title><style>body{font:14px "Noto Sans KR",system-ui;margin:24px}h1{font-size:18px}.g{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.c{border:1.5px dashed #999;border-radius:10px;padding:12px}.c b{display:block;font-size:15px}.c code{display:block;font:700 22px ui-monospace,monospace;letter-spacing:.15em;margin:6px 0}.c small{color:#666}</style><h1>Gramática de uso · ${mLabel(selMonth)} 접근 코드</h1><div class="g">${rows.map(r=>`<div class="c"><b>${esc(r[0])}</b><code>${esc(r[1])}</code><small>${esc(r[2])} · ${mLabel(selMonth)}</small></div>`).join('')}</div><script>print()<\/script>`);
+  w.document.close();
+};
+
+/* ---------- 비밀번호 변경 ---------- */
+$('#pwChange').onclick = async ()=>{
+  const a=$('#np1').value, b=$('#np2').value, err=$('#pwErr'); err.textContent='';
+  if (a.length<8){ err.textContent='8자 이상으로 정해 주세요.'; return; }
+  if (a!==b){ err.textContent='두 비밀번호가 다릅니다.'; return; }
+  P.admin={hash:A.adminHash(P.salt,a), kdf:hex(rand(16))};
+  key=await deriveKey(a,P.admin.kdf);
+  for (const s of P.students){ if (codes[s.id]) s.enc=await enc(key,codes[s.id]); else delete s.enc; }
+  $('#np1').value=$('#np2').value=''; toast('비밀번호를 바꿨습니다. 저장해야 적용됩니다.'); changed();
+};
+
+/* ---------- GitHub 저장 ---------- */
+$('#tokSave').onclick = ()=>{ const v=$('#tok').value.trim(); if(!v) return; localStorage.setItem(TOKKEY,v); $('#tokMsg').textContent='이 기기(브라우저)에 저장했습니다.'; };
+$('#tokDel').onclick = ()=>{ localStorage.removeItem(TOKKEY); $('#tok').value=''; $('#tokMsg').textContent='토큰을 지웠습니다.'; };
+function gh(path, opt){
+  const tok = localStorage.getItem(TOKKEY) || $('#tok').value.trim();
+  if (!tok) throw new Error('GitHub 토큰이 없습니다. 아래 설정에서 토큰을 넣어 주세요.');
+  opt=opt||{}; opt.headers=Object.assign({'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}, opt.headers||{});
+  return fetch('https://api.github.com'+path, opt);
+}
+$('#tokTest').onclick = async ()=>{
+  const m=$('#tokMsg'); m.textContent='확인 중…';
+  try{
+    const out=[];
+    for (const si of SITES){ const r=await gh(`/repos/${OWNER}/${si.repo}`); const j=await r.json(); out.push(si.repo+': '+(r.ok ? (j.permissions&&j.permissions.push?'쓰기 가능 ✓':'읽기만 가능 ✗ (Contents: Read and write 필요)') : '접근 불가 ✗ ('+r.status+')')); }
+    m.textContent=out.join(' · ');
+  }catch(e){ m.textContent=e.message; }
+};
+$('#saveBtn').onclick = async ()=>{
+  const btn=$('#saveBtn'), st=$('#saveSt'); btn.disabled=true; st.textContent='저장 중…';
+  const prev=P.updated; P.updated=new Date().toISOString();
+  const body=serialize(), content=b64utf8(body), res=[];
+  let ok=true;
+  try{
+    for (const si of SITES){
+      let sha;
+      const g=await gh(`/repos/${OWNER}/${si.repo}/contents/access.json?ref=main`);
+      if (g.ok) sha=(await g.json()).sha; else if (g.status!==404) throw new Error(si.repo+' 읽기 실패 ('+g.status+')');
+      const r=await gh(`/repos/${OWNER}/${si.repo}/contents/access.json`, {method:'PUT', body:JSON.stringify({message:'접근 권한 갱신 ('+mLabel(selMonth)+' 기준)', content, sha, branch:'main'})});
+      if (r.ok) res.push(si.repo+' ✓'); else { ok=false; const j=await r.json().catch(()=>({})); res.push(si.repo+' ✗ '+r.status+' '+(j.message||'')); }
+    }
+  }catch(e){ ok=false; res.push(e.message); }
+  btn.disabled=false;
+  if (ok){ saved=serialize(); $('#lastSaved').textContent='마지막 저장: '+new Date(P.updated).toLocaleString('ko-KR'); toast('저장했습니다 · '+res.join(' · ')+' — 사이트 반영까지 1~2분 걸릴 수 있어요.', 5000); dirtyCheck(); }
+  else { P.updated=prev; st.textContent='저장 실패: '+res.join(' · '); toast('저장하지 못했습니다. 아래 설정에서 토큰을 확인하거나 access.json을 내려받아 직접 올려 주세요.', 6000); $('#setDet').open=true; }
+};
+$('#dlBtn').onclick = ()=>{
+  P.updated=new Date().toISOString();
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([serialize()],{type:'application/json'})); a.download='access.json'; a.click();
+  toast('내려받은 access.json을 두 저장소(GdU, GdU_A1_B2) 맨 위 폴더에 올리면 적용됩니다.', 5000); render();
+};
+$('#undoBtn').onclick = async ()=>{
+  if (!saved){ toast('되돌릴 저장본이 없습니다.'); return; }
+  if (!confirm('마지막 저장 상태로 되돌릴까요?')) return;
+  P=JSON.parse(saved); codes={}; for (const s of P.students){ try{ codes[s.id]=s.enc?await dec(key,s.enc):''; }catch(e){ codes[s.id]=''; } } render();
+};
+$('#logoutBtn').onclick = ()=>{ if (dirtyCheck() && !confirm('저장하지 않은 변경사항이 있습니다. 그래도 잠글까요?')) return; location.reload(); };
+window.addEventListener('beforeunload', e=>{ if (P && key && dirtyCheck()){ e.preventDefault(); e.returnValue=''; } });
+
+if (!window.isSecureContext || !crypto.subtle){ document.body.innerHTML='<p style="padding:40px;text-align:center">관리 페이지는 https 주소(GitHub Pages)에서 열어 주세요.</p>'; }
+else load();
+})();
+</script>
+</body>
+</html>
